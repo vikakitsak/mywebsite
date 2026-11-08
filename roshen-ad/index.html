@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Чорнична ніч — Shorts</title>
+<style>
+@font-face{font-family:'Unbounded';font-weight:300;src:url(fonts/Unbounded-300.ttf)}
+@font-face{font-family:'Unbounded';font-weight:500;src:url(fonts/Unbounded-500.ttf)}
+@font-face{font-family:'Unbounded';font-weight:800;src:url(fonts/Unbounded-800.ttf)}
+@font-face{font-family:'Cormorant';font-style:italic;font-weight:500;src:url(fonts/Cormorant-500i.ttf)}
+@font-face{font-family:'Cormorant';font-style:italic;font-weight:700;src:url(fonts/Cormorant-700i.ttf)}
+:root{--bg:#07060f;--fg:#efe6ff}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:Unbounded,system-ui,sans-serif}
+body{display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px;box-sizing:border-box;min-height:100vh}
+#c{width:min(100%,calc((100vh - 90px)*0.5625));aspect-ratio:9/16;height:auto;background:#000;display:block}
+.ui{display:flex;gap:10px;align-items:center;width:min(100%,540px);font-size:12px}
+.ui input{flex:1}
+.ui button{font:inherit;background:#2a1d4a;color:var(--fg);border:0;padding:8px 12px;border-radius:6px;cursor:pointer}
+body.render{padding:0;display:block}
+body.render .ui{display:none}
+body.render #c{width:1080px;height:1920px}
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<div class="ui"><button id="play">▶︎ Відтворити</button><input id="scrub" type="range" min="0" max="20" step="0.0166667" value="0"><span id="tc">0.00</span></div>
+<script src="ad.js"></script>
+</body>
+</html>
