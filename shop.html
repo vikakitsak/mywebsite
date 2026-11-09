@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Букети — FLORIS</title>
+  <meta name="description" content="Каталог авторських букетів FLORIS: колекції Velvet, Blush, Wild та Mono.">
+  <meta name="theme-color" content="#5c161e">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <noscript><style>.curtain{display:none}[data-reveal]{opacity:1;transform:none}</style></noscript>
+</head>
+<body data-page="shop" data-palette="velvet">
+  <div class="curtain" aria-hidden="true"><img src="assets/logo-white.svg" alt=""><span class="curtain__bar"></span></div>
+  <script>try{if(!sessionStorage.getItem('floris-visited'))document.body.classList.add('is-first')}catch(e){}</script>
+  <main>
+    <section class="page-hero" data-form="drift" data-fx="0.3">
+      <div class="container">
+        <nav class="crumbs" aria-label="Навігація"><a href="index.html">Головна</a><span>/</span><span>Букети</span></nav>
+        <h1 class="h-display" data-split>Букети, що <span class="serif accent">говорять</span> за вас</h1>
+        <p class="lead" data-reveal>Свіжі квіти щодня, ручна збірка та фото перед відправкою. Натисніть на букет, щоб обрати розмір і додати листівку.</p>
+      </div>
+    </section>
+    <section style="padding-bottom:140px" data-form="edges" data-fx="0">
+      <div class="container">
+        <div class="toolbar">
+          <div class="chips" id="chips" role="group" aria-label="Колекції"></div>
+          <div class="toolbar__right">
+            <label class="field-inline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span class="visually-hidden">Пошук</span><input id="search" type="search" placeholder="Пошук: півонії…"></label>
+            <label class="field-inline"><span class="visually-hidden">Сортування</span><select id="sort"><option value="pop">За популярністю</option><option value="asc">Спочатку дешевші</option><option value="desc">Спочатку дорожчі</option></select></label>
+          </div>
+        </div>
+        <p class="muted" style="font-size:13px;margin:-14px 0 24px">Знайдено: <span id="shop-count">0</span></p>
+        <div class="product-grid" id="shop-grid"></div>
+      </div>
+    </section>
+    <section class="section final" data-form="heart" data-fx="0" style="min-height:80vh">
+      <div class="container">
+        <span class="eyebrow" data-reveal>Не знайшли ідеальний?</span>
+        <h2 class="h-1" style="margin:20px auto 30px;max-width:16ch" data-split>Зберіть <span class="serif accent">власний</span> букет</h2>
+        <a class="btn" href="builder.html" data-reveal>До конструктора <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/vendor/three.min.js"></script>
+  <script src="js/scene.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/art.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Контакти — FLORIS</title>
+  <meta name="description" content="Зв'яжіться з FLORIS: адреса, телефон, заявка на букет чи оформлення події.">
+  <meta name="theme-color" content="#5c161e">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <noscript><style>.curtain{display:none}[data-reveal]{opacity:1;transform:none}</style></noscript>
+</head>
+<body data-page="contact" data-palette="velvet">
+  <div class="curtain" aria-hidden="true"><img src="assets/logo-white.svg" alt=""><span class="curtain__bar"></span></div>
+  <script>try{if(!sessionStorage.getItem('floris-visited'))document.body.classList.add('is-first')}catch(e){}</script>
+  <main>
+    <section class="page-hero" data-form="halo" data-fx="0.45" data-fy="0.15">
+      <div class="container">
+        <nav class="crumbs" aria-label="Навігація"><a href="index.html">Головна</a><span>/</span><span>Контакти</span></nav>
+        <h1 class="h-display" data-split>Поговорімо про <span class="serif accent">квіти</span></h1>
+        <p class="lead" data-reveal>Замовлення, весілля, підписка чи просто питання — напишіть нам, і флористка відповість протягом години.</p>
+      </div>
+    </section>
+    <section style="padding-bottom:120px" data-form="edges" data-fx="0">
+      <div class="container contact-grid">
+        <div class="info-cards">
+          <div class="info-card" data-reveal><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg></div><div><h4>Студія</h4><p data-cfg="address"></p></div></div>
+          <div class="info-card" data-reveal style="--d:.08s"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg></div><div><h4>Телефон</h4><p data-cfg="phone"></p></div></div>
+          <div class="info-card" data-reveal style="--d:.16s"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg></div><div><h4>Email</h4><p data-cfg="email"></p></div></div>
+          <div class="info-card" data-reveal style="--d:.24s"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><div><h4>Графік</h4><p data-cfg="hours"></p></div></div>
+        </div>
+        <div class="form-card" data-reveal>
+          <h2 class="h-2" style="margin-bottom:24px">Залишити заявку</h2>
+          <form class="form" id="contact-form" novalidate>
+            <div class="form-row">
+              <div class="field"><label for="f-name">Ім'я</label><input id="f-name" name="name" required autocomplete="name"><span class="err">Вкажіть ім'я</span></div>
+              <div class="field"><label for="f-phone">Телефон</label><input id="f-phone" name="phone" type="tel" required data-phone autocomplete="tel" placeholder="+380"><span class="err">Перевірте номер</span></div>
+            </div>
+            <div class="form-row">
+              <div class="field"><label for="f-topic">Тема</label><select id="f-topic" name="topic"><option value="order">Замовлення букета</option><option value="event">Весілля / подія</option><option value="subscription">Квіткова підписка</option><option value="business">Для бізнесу</option><option value="workshop">Майстер-клас</option><option value="other">Інше</option></select></div>
+              <div class="field"><label for="f-date">Бажана дата</label><input id="f-date" name="date" type="date"></div>
+            </div>
+            <div class="field"><label for="f-msg">Повідомлення</label><textarea id="f-msg" name="message" required placeholder="Розкажіть, що вам потрібно…"></textarea><span class="err">Напишіть кілька слів</span></div>
+            <button class="btn btn--block" type="submit">Надіслати <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </form>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="faq" data-form="wave" data-fx="0" style="padding-top:40px">
+      <div class="container">
+        <div class="section-head"><div><span class="eyebrow" data-reveal>FAQ</span><h2 class="h-1" style="margin-top:18px" data-split>Часті <span class="serif accent">питання</span></h2></div></div>
+        <div class="faq" data-reveal>
+          <details><summary>Як швидко ви доставляєте?<i></i></summary><div class="ans">У середньому за 60 хвилин по місту. Також можна обрати точний інтервал доставки під час оформлення.</div></details>
+          <details><summary>Скільки коштує доставка?<i></i></summary><div class="ans">150 ₴ по місту. Для замовлень від 2 000 ₴ доставка безкоштовна.</div></details>
+          <details><summary>Чи можна побачити букет перед відправкою?<i></i></summary><div class="ans">Так! Ми завжди надсилаємо фото готового букета, і ви можете попросити щось змінити.</div></details>
+          <details><summary>Як довго простоїть букет?<i></i></summary><div class="ans">Залежно від квітів — від 7 до 14 днів. До кожного букета додаємо листівку з порадами по догляду.</div></details>
+          <details><summary>Чи можна замовити анонімно?<i></i></summary><div class="ans">Звісно. Вкажіть ім'я отримувача, а ми збережемо таємницю — кур'єр не назве відправника.</div></details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/vendor/three.min.js"></script>
+  <script src="js/scene.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/art.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
