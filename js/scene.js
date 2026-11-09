@@ -26,8 +26,8 @@ try {
 }
 if (!renderer) return;
 
-const N = small() || coarse ? 280 : 640;
-renderer.setPixelRatio(Math.min(devicePixelRatio, small() ? 1.5 : 2));
+const N = small() || coarse ? 240 : 520;
+renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.0;
@@ -76,9 +76,8 @@ function petalGeometry(aspect) {
 const TEX = (window.FLORIS_PETAL_TEX && window.FLORIS_PETAL_TEX.length) ? window.FLORIS_PETAL_TEX : [{ w: 2, h: 3, src: null }];
 const loader = new THREE.TextureLoader();
 const meshes = TEX.map((t, k) => {
-  const mat = new THREE.MeshPhysicalMaterial({
-    color: 0xa6a6a6, roughness: 0.62, metalness: 0,
-    sheen: 0.6, sheenRoughness: 0.45, sheenColor: new THREE.Color('#e07a8c'),
+  const mat = new THREE.MeshStandardMaterial({
+    color: 0xd2d2d2, roughness: 0.6, metalness: 0,
     side: THREE.DoubleSide, alphaTest: 0.35, alphaToCoverage: true, // smooth petal edges
   });
   if (t.src) {
@@ -260,15 +259,18 @@ function collectAnchors() {
   if (!anchors.length) anchors = [{ form: 'drift', fx: 0, fy: 0, y: 0 }];
 }
 
-function currentBlend() {
+// Scroll position → one continuous "progress" number: 2.0 = exactly the 3rd shape,
+// 2.5 = halfway between the 3rd and 4th. Smoothing this single number (not a pair + t)
+// keeps petals from jumping ahead to the next shape and back when you pass a section.
+function targetProgress() {
   const c = scrollY + innerHeight / 2;
+  if (anchors.length < 2 || c <= anchors[0].y) return 0;
   let j = 0;
   while (j < anchors.length - 1 && anchors[j + 1].y <= c) j++;
-  const A = anchors[j], B = anchors[Math.min(j + 1, anchors.length - 1)];
-  let t = A === B ? 0 : (c - A.y) / (B.y - A.y);
-  t = Math.min(1, Math.max(0, t));
-  t = t < 0.3 ? 0 : (t - 0.3) / 0.7; // тримаємо формацію, потім перетікаємо
-  return { A, B, t };
+  if (j >= anchors.length - 1) return anchors.length - 1;
+  let t = (c - anchors[j].y) / (anchors[j + 1].y - anchors[j].y);
+  t = Math.min(1, Math.max(0, (t - 0.35) / 0.55)); // hold the shape, then flow to the next one
+  return j + t * t * (3 - 2 * t);
 }
 
 /* ---------- миша / дотик ---------- */
@@ -312,7 +314,7 @@ const ob = { p: new THREE.Vector3(), q: new THREE.Quaternion(), s: 1, w: 0 };
 const qt = new THREE.Quaternion(), qx = new THREE.Quaternion();
 const P = new THREE.Vector3(), S = new THREE.Vector3(), M = new THREE.Matrix4();
 const clock = new THREE.Clock();
-let time = 0, running = true, smoothT = 0, smoothFx = 0, smoothFy = 0;
+let time = 0, running = true, smoothP = -1, smoothFx = 0, smoothFy = 0;
 
 document.addEventListener('visibilitychange', () => {
   running = !document.hidden;
@@ -324,20 +326,22 @@ function ease(x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) 
 function loop() {
   if (!running) return;
   const dt = Math.min(clock.getDelta(), 0.05);
-  time += dt * (reduceMotion ? 0.35 : 1);
-
-  // швидкість прокрутки → турбулентність
+  // scrolling makes the petals swirl a little faster (smoothly — no jumps)
   const sv = scrollY - lastScroll; lastScroll = scrollY;
-  scrollVel += (sv - scrollVel) * 0.12;
-  const turb = Math.max(-2, Math.min(2, scrollVel / 30));
+  scrollVel += (Math.abs(sv) - scrollVel) * (1 - Math.exp(-dt * 4));
+  time += dt * (reduceMotion ? 0.35 : 1 + Math.min(scrollVel / 60, 1.2));
 
   mouse.sx += (mouse.x - mouse.sx) * 0.06;
   mouse.sy += (mouse.y - mouse.sy) * 0.06;
   mouse.vx *= 0.85; mouse.vy *= 0.85;
 
-  const { A, B, t } = currentBlend();
-  const kT = 1 - Math.exp(-dt * 5), kF = 1 - Math.exp(-dt * 3.6);
-  smoothT += (t - smoothT) * kT;
+  const goal = targetProgress();
+  if (smoothP < 0) smoothP = goal;
+  smoothP += (goal - smoothP) * (1 - Math.exp(-dt * 3.2));
+  const jj = Math.min(anchors.length - 1, Math.floor(smoothP));
+  const A = anchors[jj], B = anchors[Math.min(jj + 1, anchors.length - 1)];
+  const t = smoothP - jj, smoothT = t;
+  const kF = 1 - Math.exp(-dt * 3.6);
   const fxTarget = (A.fx + (B.fx - A.fx) * ease(t)) * (small() ? 0.15 : 1);
   smoothFx += (fxTarget - smoothFx) * kF;
   ctx.cx = smoothFx * ctx.hw;
@@ -406,11 +410,11 @@ function loop() {
     spin[i] *= 0.96;
 
     P.x += offs[k3];
-    P.y += offs[k3 + 1] + turb * (r(i, 5) - 0.5) * 0.9;
+    P.y += offs[k3 + 1];
     P.z += offs[k3 + 2];
 
-    if (spin[i] > 0.001 || Math.abs(turb) > 0.02) {
-      E.set(spin[i] * 2 + turb * r(i, 3) * 0.6, spin[i] * 1.3, turb * r(i, 4) * 0.4);
+    if (spin[i] > 0.001) {
+      E.set(spin[i] * 2, spin[i] * 1.3, 0);
       qt.setFromEuler(E);
       qx.multiply(qt);
     }
@@ -444,6 +448,7 @@ window.FLORIS_SCENE = {
   setPalette(name) { setPalette(name); },
   burst(x = 0, y = 0) { burstQueue.push({ x, y }); },
   refresh: collectAnchors,
+  progress: () => smoothP,
 };
 document.dispatchEvent(new CustomEvent('floris:scene-ready'));
 })();
