@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FLORIS — flower studio</title>
+  <meta name="description" content="FLORIS flower studio: signature bouquets, a bouquet builder, flower delivery and event styling.">
+  <meta name="theme-color" content="#5c161e">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <noscript><style>.curtain{display:none}[data-reveal]{opacity:1;transform:none}</style></noscript>
+</head>
+<body data-page="home" data-palette="velvet">
+  <div class="curtain" aria-hidden="true"><img src="assets/logo-white.svg" alt=""><span class="curtain__bar"></span></div>
+  <script>try{if(!sessionStorage.getItem('floris-visited'))document.body.classList.add('is-first')}catch(e){}</script>
+
+  <main id="top">
+    <!-- 1. HERO: petals swirl around the logo -->
+    <section class="hero" data-form="swirl" data-fx="0">
+      <div class="hero__logo-wrap"><div class="hero__logo"><img src="assets/logo-white.svg" alt="" width="980" height="238"></div></div>
+      <div class="container hero__inner">
+        <div class="hero__top">
+          <span class="eyebrow">Flower studio</span>
+          <div class="pill-row"><span class="pill">Delivery in 60 min</span><span class="pill">Photo before delivery</span></div>
+        </div>
+        <div class="hero__bottom">
+          <h1 class="hero__tagline" data-split>Flowers that move feelings</h1>
+          <div class="hero__ctas" data-reveal style="--d:.3s">
+            <a class="btn" href="shop.html">Shop bouquets <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a class="btn btn--ghost" href="builder.html">Create your own</a>
+          </div>
+        </div>
+        <div class="hero__side" data-reveal style="--d:.5s">
+          <p style="margin:0 0 20px">Move your mouse and the petals scatter. Click and they burst. Scroll and they bloom into a flower.</p>
+          <a class="scroll-hint" href="#bloom">Scroll<i></i></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. BLOOM: petals gather into a flower -->
+    <section class="section" id="bloom" data-form="bloom" data-fx="0.5" style="min-height:110vh;display:grid;align-items:center">
+      <div class="container split">
+        <div>
+          <span class="eyebrow" data-reveal>The FLORIS way</span>
+          <h2 class="h-1" style="margin:22px 0 26px" data-split>Every petal <span class="serif accent">in its place</span></h2>
+          <p class="lead" data-reveal>We hand-tie every bouquet like architects: shape, rhythm and colour, thought through. Fresh flowers arrive from trusted growers every morning, so your bouquet lasts longer than you expect.</p>
+          <div class="stats" data-reveal>
+            <div class="stat"><b data-count="12000" data-suffix="+">0</b><span>bouquets made</span></div>
+            <div class="stat"><b data-count="48">0</b><span>varieties daily</span></div>
+            <div class="stat"><b data-count="60" data-suffix=" min">0</b><span>average delivery</span></div>
+            <div class="stat"><b data-count="4.9">0</b><span>customer rating</span></div>
+          </div>
+        </div>
+        <div aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- 3. Scroll-driven marquee -->
+    <div class="marquee decor" aria-hidden="true" data-form="wave" data-fx="0">
+      <div class="marquee__row" data-marquee="-30">
+        <span>ROSES <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="12"/></svg></span><span class="s">peonies</span><span class="o">CHRYSANTHEMUMS</span><span><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="12"/></svg> CARNATIONS</span><span class="s">eucalyptus</span><span class="o">BERRIES</span>
+      </div>
+      <div class="marquee__row" data-marquee="30" style="margin-left:-40%">
+        <span class="o">LOVE</span><span class="s">tenderness</span><span>GRATITUDE <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="12"/></svg></span><span class="o">JOY</span><span class="s">inspiration</span><span>FLORIS</span>
+      </div>
+    </div>
+
+    <!-- 4. Collections -->
+    <section class="section" data-form="halo" data-fx="0">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow" data-reveal>Collections</span>
+            <h2 class="h-1" style="margin-top:18px" data-split>Choose a <span class="serif accent">mood</span></h2>
+          </div>
+          <a class="btn btn--ghost" href="shop.html" data-reveal>All bouquets <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="coll-grid" id="collections-grid"></div>
+      </div>
+    </section>
+
+    <!-- 5. Photo gallery that moves with scroll -->
+    <section class="gallery" data-form="edges" data-fx="0" aria-label="Gallery">
+      <div class="container"><span class="eyebrow" data-reveal>From our studio</span></div>
+      <div id="gallery"></div>
+    </section>
+
+    <!-- 6. How it works (pinned) -->
+    <section class="process" data-form="edges" data-fx="0">
+      <div class="process__pin">
+        <div class="container process__grid">
+          <div>
+            <span class="eyebrow">How it works</span>
+            <div class="process__num" aria-hidden="true" style="margin-top:20px"><span>01</span><span>02</span><span>03</span><span>04</span></div>
+          </div>
+          <div>
+            <div class="process__steps">
+              <div class="process__step"><h3 class="h-1">You <span class="serif accent">choose</span></h3><p>A ready-made bouquet from the shop or your own in our builder. Colour, flowers, size, wrapping — whatever you like.</p></div>
+              <div class="process__step"><h3 class="h-1">We <span class="serif accent">arrange</span></h3><p>A florist hand-ties your bouquet from fresh flowers that arrived this morning.</p></div>
+              <div class="process__step"><h3 class="h-1">You get a <span class="serif accent">photo</span></h3><p>Before delivery you see your bouquet in a photo and can ask for any changes.</p></div>
+              <div class="process__step"><h3 class="h-1">We deliver <span class="serif accent">emotion</span></h3><p>A courier brings the flowers at a convenient time. Free delivery on orders over ₴2,000.</p></div>
+            </div>
+            <div class="process__bar" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Bestsellers -->
+    <section class="section" data-form="drift" data-fx="0">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow" data-reveal>Customer favourites</span>
+            <h2 class="h-1" style="margin-top:18px" data-split>Bestsellers &amp; <span class="serif accent">new</span></h2>
+          </div>
+        </div>
+        <div class="product-grid" id="featured-grid"></div>
+      </div>
+    </section>
+
+    <!-- 8. Builder teaser -->
+    <section class="section" data-form="wave" data-fx="0">
+      <div class="container">
+        <div class="teaser" data-reveal>
+          <div>
+            <span class="eyebrow">Bouquet builder</span>
+            <h2 class="h-1" style="margin:18px 0 20px">Create <span class="serif accent">your own</span> bouquet</h2>
+            <p class="lead">Pick a palette and even the petals in the background change colour. Flowers, size, wrapping, a greeting card — the price updates instantly.</p>
+            <a class="btn" href="builder.html" style="margin-top:26px">Try it <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+          <div class="teaser__art" id="teaser-art" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Reviews -->
+    <section class="section" data-form="drift" data-fx="0">
+      <div class="container reviews">
+        <div>
+          <span class="eyebrow" data-reveal>Reviews</span>
+          <h2 class="h-1" style="margin-top:18px" data-split>Words that <span class="serif accent">bloom</span></h2>
+          <div class="slider-ctrl">
+            <button class="round-btn" type="button" data-rev="prev" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+            <button class="round-btn" type="button" data-rev="next" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+        </div>
+        <div class="review-slider" aria-live="polite">
+          <figure class="review"><div class="stars">★★★★★</div><blockquote>“The bouquet was even better than in the photo. My mum cried with happiness, and the flowers lasted almost two weeks.”</blockquote><cite>Olena · Velvet Night</cite></figure>
+          <figure class="review"><div class="stars">★★★★★</div><blockquote>“I built my bouquet in two minutes and they delivered exactly what I imagined. Pure magic!”</blockquote><cite>Maria · custom bouquet</cite></figure>
+          <figure class="review"><div class="stars">★★★★★</div><blockquote>“FLORIS decorated our wedding. Guests still ask where we found such florists.”</blockquote><cite>Andrii &amp; Iryna · wedding decor</cite></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Finale: petals form a heart -->
+    <section class="section final" data-form="heart" data-fx="0">
+      <div class="container">
+        <span class="eyebrow" data-reveal>With love, FLORIS</span>
+        <h2 class="h-display" data-split>Give an <span class="serif accent">emotion</span> today</h2>
+        <div class="hero__ctas" style="justify-content:center" data-reveal>
+          <a class="btn" href="shop.html">Order a bouquet <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn btn--ghost" href="contact.html">Get in touch</a>
+        </div>
+        <form class="subscribe" data-reveal novalidate>
+          <label class="visually-hidden" for="sub-email">Email</label>
+          <input id="sub-email" type="email" placeholder="Your email — for offers and news" autocomplete="email">
+          <button class="btn btn--sm" type="submit">Subscribe</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/vendor/three.min.js"></script>
+  <script src="js/petal-textures.js"></script>
+  <script src="js/scene.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

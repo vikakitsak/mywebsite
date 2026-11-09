@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bouquet builder — FLORIS</title>
+  <meta name="description" content="Create your own bouquet: palette, flowers, stems, wrapping and a greeting card.">
+  <meta name="theme-color" content="#5c161e">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <noscript><style>.curtain{display:none}[data-reveal]{opacity:1;transform:none}</style></noscript>
+</head>
+<body data-page="builder" data-palette="velvet">
+  <div class="curtain" aria-hidden="true"><img src="assets/logo-white.svg" alt=""><span class="curtain__bar"></span></div>
+  <script>try{if(!sessionStorage.getItem('floris-visited'))document.body.classList.add('is-first')}catch(e){}</script>
+
+  <main>
+    <section class="page-hero" data-form="bloom" data-fx="0.5" data-fy="0.2">
+      <div class="container">
+        <nav class="crumbs" aria-label="Breadcrumbs"><a href="index.html">Home</a><span>/</span><span>Builder</span></nav>
+        <h1 class="h-display" data-split>Your bouquet, <span class="serif accent">your rules</span></h1>
+        <p class="lead" data-reveal>Pick a palette and the petals around you change colour too. The price updates instantly.</p>
+      </div>
+    </section>
+    <section style="padding-bottom:140px" data-form="edges" data-fx="0">
+      <div class="container builder">
+        <div class="builder__stage" id="stage" data-no-burst>
+          <div class="art-holder"></div>
+          <span class="tag builder__ref">Style reference</span>
+          <div class="builder__price"><div><small class="muted" id="b-detail"></small><br><b id="b-price">₴0</b></div><button class="btn btn--sm" type="submit" form="builder">Add to cart <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+        </div>
+        <form id="builder" novalidate>
+          <div class="step" data-reveal>
+            <h3><span>01</span>Palette</h3>
+            <div class="swatches">
+              <div class="swatch"><input type="radio" name="palette" id="pl-velvet" value="velvet" checked><label for="pl-velvet"><i style="background:linear-gradient(135deg,#9e2b3b,#3d0910)"></i>Velvet</label></div>
+              <div class="swatch"><input type="radio" name="palette" id="pl-blush" value="blush"><label for="pl-blush"><i style="background:linear-gradient(135deg,#fbe8e4,#e59aa2)"></i>Blush</label></div>
+              <div class="swatch"><input type="radio" name="palette" id="pl-cream" value="cream"><label for="pl-cream"><i style="background:linear-gradient(135deg,#ffffff,#f0c9c4)"></i>Cream</label></div>
+              <div class="swatch"><input type="radio" name="palette" id="pl-peach" value="peach"><label for="pl-peach"><i style="background:linear-gradient(135deg,#f6c39a,#e88a6c)"></i>Peach</label></div>
+              <div class="swatch"><input type="radio" name="palette" id="pl-amber" value="amber"><label for="pl-amber"><i style="background:linear-gradient(135deg,#f08a3c,#a8331f)"></i>Amber</label></div>
+            </div>
+          </div>
+          <div class="step" data-reveal>
+            <h3><span>02</span>Flowers</h3>
+            <div class="seg">
+              <input type="radio" name="flower" id="fl-rose" value="rose" checked><label for="fl-rose">Roses<small>₴95 / stem</small></label>
+              <input type="radio" name="flower" id="fl-peony" value="peony"><label for="fl-peony">Peony roses<small>₴180 / stem</small></label>
+              <input type="radio" name="flower" id="fl-chrys" value="chrysanthemum"><label for="fl-chrys">Chrysanthemums<small>₴85 / stem</small></label>
+              <input type="radio" name="flower" id="fl-carn" value="carnation"><label for="fl-carn">Carnations<small>₴60 / stem</small></label>
+              <input type="radio" name="flower" id="fl-mix" value="mix"><label for="fl-mix">Florist's mix<small>₴120 / stem</small></label>
+            </div>
+          </div>
+          <div class="step" data-reveal>
+            <h3><span>03</span>Number of stems</h3>
+            <div class="seg">
+              <input type="radio" name="count" id="ct7" value="7"><label for="ct7">7</label>
+              <input type="radio" name="count" id="ct11" value="11" checked><label for="ct11">11</label>
+              <input type="radio" name="count" id="ct15" value="15"><label for="ct15">15</label>
+              <input type="radio" name="count" id="ct25" value="25"><label for="ct25">25</label>
+            </div>
+          </div>
+          <div class="step" data-reveal>
+            <h3><span>04</span>Wrapping</h3>
+            <div class="seg">
+              <input type="radio" name="wrap" id="wr-wine" value="wine" checked><label for="wr-wine">Wine<small>₴150</small></label>
+              <input type="radio" name="wrap" id="wr-blush" value="blush"><label for="wr-blush">Blush<small>₴150</small></label>
+              <input type="radio" name="wrap" id="wr-white" value="white"><label for="wr-white">White tulle<small>₴120</small></label>
+              <input type="radio" name="wrap" id="wr-kraft" value="kraft"><label for="wr-kraft">Kraft<small>₴100</small></label>
+            </div>
+          </div>
+          <div class="step" data-reveal>
+            <h3><span>05</span>Greeting card <small class="muted" style="font-family:var(--f-body);font-size:12px">+₴50</small></h3>
+            <div class="field"><label class="visually-hidden" for="note">Card text</label><textarea id="note" name="note" maxlength="120" placeholder="For example: “You are my spring” ✿"></textarea></div>
+            <div class="counter-note" id="note-count">0/120</div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:30px" data-reveal>
+            <button class="btn" type="submit">Add to cart <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            <button class="btn btn--ghost" type="button" id="shuffle">Another reference ↻</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/vendor/three.min.js"></script>
+  <script src="js/petal-textures.js"></script>
+  <script src="js/scene.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
