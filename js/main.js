@@ -21,7 +21,7 @@
   const { PRODUCTS = [], COLLECTIONS = {}, SIZES = {} } = window.FLORIS_DATA || {};
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
-  const money = (n) => '₴' + Math.round(n).toLocaleString('en-US');
+  const money = (n) => '$' + Math.round(n).toLocaleString('en-US');
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const store = {
     get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
@@ -314,8 +314,8 @@
   }
 
   /* ---------- cart ---------- */
-  let cart = store.get('floris-cart', []).filter((it) => it.photo || PRODUCTS.some((p) => p.id === it.id));
-  const saveCart = () => { store.set('floris-cart', cart); updateCount(); };
+  let cart = store.get('floris-cart-usd', []).filter((it) => it.photo || PRODUCTS.some((p) => p.id === it.id));
+  const saveCart = () => { store.set('floris-cart-usd', cart); updateCount(); };
   const findProduct = (id) => PRODUCTS.find((p) => p.id === id);
   const itemPhoto = (it) => it.photo || (findProduct(it.id) || {}).photo || '';
   function updateCount(bump) {
@@ -335,7 +335,7 @@
     if (window.FLORIS_SCENE) window.FLORIS_SCENE.burst(0.6, 0.6);
   }
   const cartTotal = () => cart.reduce((s, i) => s + i.price * i.qty, 0);
-  const DELIVERY_FREE_FROM = 2000, DELIVERY = 150;
+  const DELIVERY_FREE_FROM = 50, DELIVERY = 5;
   function renderCart() {
     const bodyEl = $('.drawer__body'), foot = $('.drawer__foot');
     if (!cart.length) {
@@ -599,8 +599,8 @@
   function initBuilder() {
     const form = $('#builder'); if (!form) return;
     const stage = $('#stage'), priceEl = $('#b-price'), detailEl = $('#b-detail');
-    const STEM = { rose: 95, peony: 180, chrysanthemum: 85, carnation: 60, mix: 120 };
-    const WRAP = { wine: 150, blush: 150, white: 120, kraft: 100 };
+    const STEM = { rose: 3, peony: 5, chrysanthemum: 3, carnation: 2, mix: 4 };
+    const WRAP = { wine: 4, blush: 4, white: 3, kraft: 3 };
     const NAMES = { rose: 'roses', peony: 'peony roses', chrysanthemum: 'chrysanthemums', carnation: 'carnations', mix: 'mix' };
     // a real bouquet photo as a style reference for each palette
     const REF = {
@@ -612,7 +612,7 @@
     };
     let alt = 0;
     const state = () => Object.fromEntries(new FormData(form));
-    const price = (s) => STEM[s.flower] * +s.count + WRAP[s.wrap] + (s.note.trim() ? 50 : 0);
+    const price = (s) => STEM[s.flower] * +s.count + WRAP[s.wrap] + (s.note.trim() ? 2 : 0);
     const refProduct = (s) => findProduct(REF[s.palette][alt % 2]);
     let lastRef = '';
     const draw = () => {
