@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="uk">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FLORIS — квіткова студія</title>
-  <meta name="description" content="FLORIS — квіткова студія. Авторські букети, конструктор букета, доставка квітів, оформлення подій.">
+  <title>FLORIS — flower studio</title>
+  <meta name="description" content="FLORIS flower studio: signature bouquets, a bouquet builder, flower delivery and event styling.">
   <meta name="theme-color" content="#5c161e">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,84 +18,90 @@
   <script>try{if(!sessionStorage.getItem('floris-visited'))document.body.classList.add('is-first')}catch(e){}</script>
 
   <main id="top">
-    <!-- 1. HERO: пелюстки кружляють навколо логотипа -->
+    <!-- 1. HERO: petals swirl around the logo -->
     <section class="hero" data-form="swirl" data-fx="0">
       <div class="hero__logo-wrap"><div class="hero__logo"><img src="assets/logo-white.svg" alt="" width="980" height="238"></div></div>
       <div class="container hero__inner">
         <div class="hero__top">
-          <span class="eyebrow">Квіткова студія</span>
-          <div class="pill-row"><span class="pill">Доставка за 60 хв</span><span class="pill">Фото перед відправкою</span></div>
+          <span class="eyebrow">Flower studio</span>
+          <div class="pill-row"><span class="pill">Delivery in 60 min</span><span class="pill">Photo before delivery</span></div>
         </div>
         <div class="hero__bottom">
-          <h1 class="hero__tagline" data-split>Квіти, що рухають почуття</h1>
+          <h1 class="hero__tagline" data-split>Flowers that move feelings</h1>
           <div class="hero__ctas" data-reveal style="--d:.3s">
-            <a class="btn" href="shop.html">Обрати букет <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-            <a class="btn btn--ghost" href="builder.html">Зібрати свій</a>
+            <a class="btn" href="shop.html">Shop bouquets <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a class="btn btn--ghost" href="builder.html">Create your own</a>
           </div>
         </div>
         <div class="hero__side" data-reveal style="--d:.5s">
-          <p style="margin:0 0 20px">Поведіть мишкою — пелюстки розлетяться. Клацніть — і вони вибухнуть. Гортайте — і вони зберуться в квітку.</p>
-          <a class="scroll-hint" href="#bloom">Гортайте<i></i></a>
+          <p style="margin:0 0 20px">Move your mouse and the petals scatter. Click and they burst. Scroll and they bloom into a flower.</p>
+          <a class="scroll-hint" href="#bloom">Scroll<i></i></a>
         </div>
       </div>
     </section>
 
-    <!-- 2. BLOOM: пелюстки збираються у квітку -->
+    <!-- 2. BLOOM: petals gather into a flower -->
     <section class="section" id="bloom" data-form="bloom" data-fx="0.5" style="min-height:110vh;display:grid;align-items:center">
       <div class="container split">
         <div>
-          <span class="eyebrow" data-reveal>Філософія FLORIS</span>
-          <h2 class="h-1" style="margin:22px 0 26px" data-split>Кожна пелюстка — <span class="serif accent">на своєму місці</span></h2>
-          <p class="lead" data-reveal>Ми збираємо букети вручну, як архітектори: продумуємо форму, ритм і колір. Квіти приходять до нас від перевірених фермерів щоранку, тому букет стоїть довше, ніж ви очікуєте.</p>
+          <span class="eyebrow" data-reveal>The FLORIS way</span>
+          <h2 class="h-1" style="margin:22px 0 26px" data-split>Every petal <span class="serif accent">in its place</span></h2>
+          <p class="lead" data-reveal>We hand-tie every bouquet like architects: shape, rhythm and colour, thought through. Fresh flowers arrive from trusted growers every morning, so your bouquet lasts longer than you expect.</p>
           <div class="stats" data-reveal>
-            <div class="stat"><b data-count="12000" data-suffix="+">0</b><span>букетів зібрано</span></div>
-            <div class="stat"><b data-count="48">0</b><span>сортів щодня</span></div>
-            <div class="stat"><b data-count="60" data-suffix=" хв">0</b><span>середня доставка</span></div>
-            <div class="stat"><b data-count="4.9">0</b><span>оцінка клієнтів</span></div>
+            <div class="stat"><b data-count="12000" data-suffix="+">0</b><span>bouquets made</span></div>
+            <div class="stat"><b data-count="48">0</b><span>varieties daily</span></div>
+            <div class="stat"><b data-count="60" data-suffix=" min">0</b><span>average delivery</span></div>
+            <div class="stat"><b data-count="4.9">0</b><span>customer rating</span></div>
           </div>
         </div>
         <div aria-hidden="true"></div>
       </div>
     </section>
 
-    <!-- 3. Бігучий рядок, що рухається від прокрутки -->
+    <!-- 3. Scroll-driven marquee -->
     <div class="marquee decor" aria-hidden="true" data-form="wave" data-fx="0">
       <div class="marquee__row" data-marquee="-30">
-        <span>ТРОЯНДИ <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="12"/></svg></span><span class="s">півонії</span><span class="o">РАНУНКУЛЮСИ</span><span><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="12"/></svg> ТЮЛЬПАНИ</span><span class="s">евкаліпт</span><span class="o">ГІПСОФІЛА</span>
+        <span>ROSES <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="12"/></svg></span><span class="s">peonies</span><span class="o">CHRYSANTHEMUMS</span><span><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="12"/></svg> CARNATIONS</span><span class="s">eucalyptus</span><span class="o">BERRIES</span>
       </div>
       <div class="marquee__row" data-marquee="30" style="margin-left:-40%">
-        <span class="o">ЛЮБОВ</span><span class="s">ніжність</span><span>ВДЯЧНІСТЬ <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="12"/></svg></span><span class="o">РАДІСТЬ</span><span class="s">натхнення</span><span>FLORIS</span>
+        <span class="o">LOVE</span><span class="s">tenderness</span><span>GRATITUDE <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="12"/></svg></span><span class="o">JOY</span><span class="s">inspiration</span><span>FLORIS</span>
       </div>
     </div>
 
-    <!-- 4. Колекції -->
+    <!-- 4. Collections -->
     <section class="section" data-form="halo" data-fx="0">
       <div class="container">
         <div class="section-head">
           <div>
-            <span class="eyebrow" data-reveal>Колекції</span>
-            <h2 class="h-1" style="margin-top:18px" data-split>Оберіть <span class="serif accent">настрій</span></h2>
+            <span class="eyebrow" data-reveal>Collections</span>
+            <h2 class="h-1" style="margin-top:18px" data-split>Choose a <span class="serif accent">mood</span></h2>
           </div>
-          <a class="btn btn--ghost" href="shop.html" data-reveal>Усі букети <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn btn--ghost" href="shop.html" data-reveal>All bouquets <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
         <div class="coll-grid" id="collections-grid"></div>
       </div>
     </section>
 
-    <!-- 5. Як ми працюємо (закріплена секція) -->
+    <!-- 5. Photo gallery that moves with scroll -->
+    <section class="gallery" data-form="edges" data-fx="0" aria-label="Gallery">
+      <div class="container"><span class="eyebrow" data-reveal>From our studio</span></div>
+      <div id="gallery"></div>
+    </section>
+
+    <!-- 6. How it works (pinned) -->
     <section class="process" data-form="edges" data-fx="0">
       <div class="process__pin">
         <div class="container process__grid">
           <div>
-            <span class="eyebrow">Як це працює</span>
+            <span class="eyebrow">How it works</span>
             <div class="process__num" aria-hidden="true" style="margin-top:20px"><span>01</span><span>02</span><span>03</span><span>04</span></div>
           </div>
           <div>
             <div class="process__steps">
-              <div class="process__step"><h3 class="h-1">Ви <span class="serif accent">обираєте</span></h3><p>Готовий букет із каталогу або власний — у нашому 3D-конструкторі. Колір, квіти, розмір, упаковка — як забажаєте.</p></div>
-              <div class="process__step"><h3 class="h-1">Ми <span class="serif accent">збираємо</span></h3><p>Флористка вручну збирає композицію зі свіжих квітів, які привезли сьогодні зранку.</p></div>
-              <div class="process__step"><h3 class="h-1">Надсилаємо <span class="serif accent">фото</span></h3><p>Перед відправкою ви бачите свій букет на фото й можете внести побажання.</p></div>
-              <div class="process__step"><h3 class="h-1">Доставляємо <span class="serif accent">емоцію</span></h3><p>Кур'єр привезе квіти в зручний час. Доставка безкоштовна для замовлень від 2 000 ₴.</p></div>
+              <div class="process__step"><h3 class="h-1">You <span class="serif accent">choose</span></h3><p>A ready-made bouquet from the shop or your own in our builder. Colour, flowers, size, wrapping — whatever you like.</p></div>
+              <div class="process__step"><h3 class="h-1">We <span class="serif accent">arrange</span></h3><p>A florist hand-ties your bouquet from fresh flowers that arrived this morning.</p></div>
+              <div class="process__step"><h3 class="h-1">You get a <span class="serif accent">photo</span></h3><p>Before delivery you see your bouquet in a photo and can ask for any changes.</p></div>
+              <div class="process__step"><h3 class="h-1">We deliver <span class="serif accent">emotion</span></h3><p>A courier brings the flowers at a convenient time. Free delivery on orders over ₴2,000.</p></div>
             </div>
             <div class="process__bar" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
           </div>
@@ -103,75 +109,75 @@
       </div>
     </section>
 
-    <!-- 6. Хіти -->
-    <section class="section" data-form="edges" data-fx="0">
+    <!-- 7. Bestsellers -->
+    <section class="section" data-form="drift" data-fx="0">
       <div class="container">
         <div class="section-head">
           <div>
-            <span class="eyebrow" data-reveal>Улюблене клієнтами</span>
-            <h2 class="h-1" style="margin-top:18px" data-split>Хіти та <span class="serif accent">новинки</span></h2>
+            <span class="eyebrow" data-reveal>Customer favourites</span>
+            <h2 class="h-1" style="margin-top:18px" data-split>Bestsellers &amp; <span class="serif accent">new</span></h2>
           </div>
         </div>
         <div class="product-grid" id="featured-grid"></div>
       </div>
     </section>
 
-    <!-- 7. Конструктор -->
+    <!-- 8. Builder teaser -->
     <section class="section" data-form="wave" data-fx="0">
       <div class="container">
         <div class="teaser" data-reveal>
           <div>
-            <span class="eyebrow">Конструктор букета</span>
-            <h2 class="h-1" style="margin:18px 0 20px">Зберіть <span class="serif accent">свій</span> букет</h2>
-            <p class="lead">Оберіть палітру — і навіть пелюстки на фоні змінять колір. Квіти, розмір, упаковка, листівка: ціна рахується одразу.</p>
-            <a class="btn" href="builder.html" style="margin-top:26px">Спробувати <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <span class="eyebrow">Bouquet builder</span>
+            <h2 class="h-1" style="margin:18px 0 20px">Create <span class="serif accent">your own</span> bouquet</h2>
+            <p class="lead">Pick a palette and even the petals in the background change colour. Flowers, size, wrapping, a greeting card — the price updates instantly.</p>
+            <a class="btn" href="builder.html" style="margin-top:26px">Try it <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
           </div>
           <div class="teaser__art" id="teaser-art" aria-hidden="true"></div>
         </div>
       </div>
     </section>
 
-    <!-- 8. Відгуки -->
+    <!-- 9. Reviews -->
     <section class="section" data-form="drift" data-fx="0">
       <div class="container reviews">
         <div>
-          <span class="eyebrow" data-reveal>Відгуки</span>
-          <h2 class="h-1" style="margin-top:18px" data-split>Слова, що <span class="serif accent">цвітуть</span></h2>
+          <span class="eyebrow" data-reveal>Reviews</span>
+          <h2 class="h-1" style="margin-top:18px" data-split>Words that <span class="serif accent">bloom</span></h2>
           <div class="slider-ctrl">
-            <button class="round-btn" type="button" data-rev="prev" aria-label="Попередній відгук"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
-            <button class="round-btn" type="button" data-rev="next" aria-label="Наступний відгук"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            <button class="round-btn" type="button" data-rev="prev" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+            <button class="round-btn" type="button" data-rev="next" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
           </div>
         </div>
         <div class="review-slider" aria-live="polite">
-          <figure class="review"><div class="stars">★★★★★</div><blockquote>«Букет був навіть кращим, ніж на фото. Мама плакала від щастя, а квіти простояли майже два тижні».</blockquote><cite>Олена · букет «Оксамитова ніч»</cite></figure>
-          <figure class="review"><div class="stars">★★★★★</div><blockquote>«Зібрала букет у конструкторі за дві хвилини — привезли рівно такий, як я задумала. Це магія!»</blockquote><cite>Марія · власний букет</cite></figure>
-          <figure class="review"><div class="stars">★★★★★</div><blockquote>«FLORIS оформили наше весілля. Гості досі питають, де ми знайшли таких флористів».</blockquote><cite>Андрій та Ірина · весільний декор</cite></figure>
+          <figure class="review"><div class="stars">★★★★★</div><blockquote>“The bouquet was even better than in the photo. My mum cried with happiness, and the flowers lasted almost two weeks.”</blockquote><cite>Olena · Velvet Night</cite></figure>
+          <figure class="review"><div class="stars">★★★★★</div><blockquote>“I built my bouquet in two minutes and they delivered exactly what I imagined. Pure magic!”</blockquote><cite>Maria · custom bouquet</cite></figure>
+          <figure class="review"><div class="stars">★★★★★</div><blockquote>“FLORIS decorated our wedding. Guests still ask where we found such florists.”</blockquote><cite>Andrii &amp; Iryna · wedding decor</cite></figure>
         </div>
       </div>
     </section>
 
-    <!-- 9. Фінал: пелюстки складаються в серце -->
+    <!-- 10. Finale: petals form a heart -->
     <section class="section final" data-form="heart" data-fx="0">
       <div class="container">
-        <span class="eyebrow" data-reveal>З любов'ю, FLORIS</span>
-        <h2 class="h-display" data-split>Подаруйте <span class="serif accent">емоцію</span> сьогодні</h2>
+        <span class="eyebrow" data-reveal>With love, FLORIS</span>
+        <h2 class="h-display" data-split>Give an <span class="serif accent">emotion</span> today</h2>
         <div class="hero__ctas" style="justify-content:center" data-reveal>
-          <a class="btn" href="shop.html">Замовити букет <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-          <a class="btn btn--ghost" href="contact.html">Зв'язатися</a>
+          <a class="btn" href="shop.html">Order a bouquet <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn btn--ghost" href="contact.html">Get in touch</a>
         </div>
         <form class="subscribe" data-reveal novalidate>
           <label class="visually-hidden" for="sub-email">Email</label>
-          <input id="sub-email" type="email" placeholder="Ваш email — для знижок і новинок" autocomplete="email">
-          <button class="btn btn--sm" type="submit">Підписатися</button>
+          <input id="sub-email" type="email" placeholder="Your email — for offers and news" autocomplete="email">
+          <button class="btn btn--sm" type="submit">Subscribe</button>
         </form>
       </div>
     </section>
   </main>
 
   <script src="js/vendor/three.min.js"></script>
+  <script src="js/petal-textures.js"></script>
   <script src="js/scene.js"></script>
   <script src="js/data.js"></script>
-  <script src="js/art.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

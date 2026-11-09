@@ -44,21 +44,20 @@ const key = new THREE.DirectionalLight(0xfff1ea, 1.7); key.position.set(4, 6, 8)
 const rim = new THREE.DirectionalLight(0xff5a78, 2.2); rim.position.set(-6, 2, -5); scene.add(rim);
 const pointer = new THREE.PointLight(0xffc4cc, 40, 12, 2); pointer.position.set(0, 0, 3); scene.add(pointer);
 
-/* ---------- petal geometry: вигнута пелюстка-«чашечка» ---------- */
-function petalGeometry() {
-  const SU = 10, SV = 16;
-  const pos = [], col = [], idx = [];
+/* ---------- геометрія пелюстки ----------
+   Форма й прожилки — з текстур пелюсток із ваших 3D-матеріалів (js/petal-textures.js).
+   Площина вигнута «чашечкою», краї текстури обрізаються прозорістю. */
+function petalGeometry(aspect) {
+  const SU = 10, SV = 14, W = aspect;
+  const pos = [], uv = [], idx = [];
   for (let j = 0; j <= SV; j++) {
     const v = j / SV;
-    const w = 0.5 * Math.pow(v, 0.5) * Math.pow(Math.max(1 - v, 0), 0.28) + 0.02;
     for (let i = 0; i <= SU; i++) {
       const u = (i / SU) * 2 - 1;
-      const x = u * w;
-      const y = v;
-      const z = 0.42 * u * u * w - 0.22 * v * v + 0.025 * Math.sin(u * 7) * v * v * v;
-      pos.push(x, y, z);
-      const shade = 0.45 + 0.55 * Math.pow(v, 0.7) - 0.08 * Math.abs(u);
-      col.push(shade, shade * 0.96, shade * 0.96);
+      const x = u * W * 0.5;
+      const z = 0.3 * u * u * W - 0.24 * v * v + 0.02 * Math.sin(u * 6 + v * 3) * v;
+      pos.push(x, v, z);
+      uv.push(i / SU, v);
     }
   }
   for (let j = 0; j < SV; j++) for (let i = 0; i < SU; i++) {
@@ -67,22 +66,37 @@ function petalGeometry() {
   }
   const g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
-  g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
   g.setIndex(idx);
-  g.translate(0, -0.15, 0);
+  g.translate(0, -0.12, 0);
   g.computeVertexNormals();
   return g;
 }
 
-const material = new THREE.MeshPhysicalMaterial({
-  color: 0xffffff, vertexColors: true, roughness: 0.62, metalness: 0,
-  sheen: 0.75, sheenRoughness: 0.35, sheenColor: new THREE.Color('#ff9fb0'),
-  side: THREE.DoubleSide,
+const TEX = (window.FLORIS_PETAL_TEX && window.FLORIS_PETAL_TEX.length) ? window.FLORIS_PETAL_TEX : [{ w: 2, h: 3, src: null }];
+const loader = new THREE.TextureLoader();
+const meshes = TEX.map((t, k) => {
+  const mat = new THREE.MeshPhysicalMaterial({
+    color: 0xa6a6a6, roughness: 0.62, metalness: 0,
+    sheen: 0.6, sheenRoughness: 0.45, sheenColor: new THREE.Color('#e07a8c'),
+    side: THREE.DoubleSide, alphaTest: 0.35, alphaToCoverage: true, // smooth petal edges
+  });
+  if (t.src) {
+    const tex = loader.load(t.src, () => { mat.needsUpdate = true; });
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = 4;
+    mat.map = tex;
+  }
+  const count = Math.ceil((N - k) / TEX.length);
+  const m = new THREE.InstancedMesh(petalGeometry(t.w / t.h), mat, count);
+  m.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  m.frustumCulled = false;
+  m.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(count * 3), 3);
+  m.instanceColor.setUsage(THREE.DynamicDrawUsage);
+  group.add(m);
+  return m;
 });
-const mesh = new THREE.InstancedMesh(petalGeometry(), material, N);
-mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-mesh.frustumCulled = false;
-group.add(mesh);
+const K = meshes.length;
 
 /* ---------- per-petal random seeds ---------- */
 const R = new Float32Array(N * 8);
@@ -91,12 +105,13 @@ const r = (i, k) => R[i * 8 + k];
 
 /* ---------- палітри ---------- */
 const PALETTES = {
-  velvet: ['#2e060c', '#4a0d16', '#5c161e', '#7a1f2b', '#9e2b3b', '#c25a68'],
+  velvet: ['#3a0710', '#5c161e', '#6e1a26', '#8a2433', '#a8334a', '#c25a68'],
   blush:  ['#f6d5d4', '#f0b9bd', '#e59aa2', '#fbe8e4', '#d98490', '#fff4f0'],
-  snow:   ['#ffffff', '#f7efe9', '#efe3da', '#e9d6cf', '#fdf9f6', '#d8c7bd'],
-  sunset: ['#f0a77f', '#e57b5f', '#c94f4f', '#f6c39a', '#a33a45', '#ffd9b8'],
-  wild:   ['#c98bb9', '#8d6bb5', '#f2c46d', '#e9e2f5', '#d66a7b', '#9fb59d'],
+  cream:  ['#ffffff', '#f7efe9', '#f3dcd2', '#e9d6cf', '#fdf9f6', '#f0c9c4'],
+  amber:  ['#e8632b', '#f08a3c', '#c9442a', '#fbe9dc', '#ffffff', '#a8331f'],
+  peach:  ['#f6c39a', '#f0a77f', '#e88a6c', '#7a1f2b', '#ffd9b8', '#fbe2d0'],
 };
+PALETTES.snow = PALETTES.cream; PALETTES.sunset = PALETTES.peach; PALETTES.wild = PALETTES.amber;
 const FLOWER_COUNT = Math.min(N, small() ? 70 : 96);
 const colors = new Float32Array(N * 3);
 const targetColors = new Float32Array(N * 3);
@@ -121,8 +136,6 @@ function setPalette(name, instant = false) {
 }
 let colorsDirty = true;
 setPalette(document.body.dataset.palette || 'velvet', true);
-mesh.instanceColor = new THREE.InstancedBufferAttribute(colors, 3);
-mesh.instanceColor.setUsage(THREE.DynamicDrawUsage);
 
 /* ---------- формації ---------- */
 const ctx = { hw: 6, hh: 4, cx: 0, scale: 1 };
@@ -404,9 +417,9 @@ function loop() {
 
     S.setScalar(sc);
     M.compose(P, qx, S);
-    mesh.setMatrixAt(i, M);
+    meshes[i % K].setMatrixAt(Math.floor(i / K), M);
   }
-  mesh.instanceMatrix.needsUpdate = true;
+  for (const m of meshes) m.instanceMatrix.needsUpdate = true;
 
   if (colorsDirty) {
     let diff = 0;
@@ -414,7 +427,11 @@ function loop() {
       const d = targetColors[i] - colors[i];
       colors[i] += d * 0.06; diff += Math.abs(d);
     }
-    mesh.instanceColor.needsUpdate = true;
+    for (let i = 0; i < N; i++) {
+      const arr = meshes[i % K].instanceColor.array, o3 = Math.floor(i / K) * 3;
+      arr[o3] = colors[i * 3]; arr[o3 + 1] = colors[i * 3 + 1]; arr[o3 + 2] = colors[i * 3 + 2];
+    }
+    for (const m of meshes) m.instanceColor.needsUpdate = true;
     if (diff < 0.01) colorsDirty = false;
   }
 
