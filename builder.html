@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=4">
   <noscript><style>.curtain{display:none}[data-reveal]{opacity:1;transform:none}</style></noscript>
 </head>
 <body data-page="builder" data-palette="velvet">
@@ -30,7 +30,7 @@
         <div class="builder__stage" id="stage" data-no-burst>
           <div class="art-holder"></div>
           <span class="tag builder__ref">Style reference</span>
-          <div class="builder__price"><div><small class="muted" id="b-detail"></small><br><b id="b-price">₴0</b></div><button class="btn btn--sm" type="submit" form="builder">Add to cart <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+          <div class="builder__price"><div><small class="muted" id="b-detail"></small><br><b id="b-price">$0</b></div><button class="btn btn--sm" type="submit" form="builder">Add to cart <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
         </div>
         <form id="builder" novalidate>
           <div class="step" data-reveal>
@@ -46,11 +46,11 @@
           <div class="step" data-reveal>
             <h3><span>02</span>Flowers</h3>
             <div class="seg">
-              <input type="radio" name="flower" id="fl-rose" value="rose" checked><label for="fl-rose">Roses<small>₴95 / stem</small></label>
-              <input type="radio" name="flower" id="fl-peony" value="peony"><label for="fl-peony">Peony roses<small>₴180 / stem</small></label>
-              <input type="radio" name="flower" id="fl-chrys" value="chrysanthemum"><label for="fl-chrys">Chrysanthemums<small>₴85 / stem</small></label>
-              <input type="radio" name="flower" id="fl-carn" value="carnation"><label for="fl-carn">Carnations<small>₴60 / stem</small></label>
-              <input type="radio" name="flower" id="fl-mix" value="mix"><label for="fl-mix">Florist's mix<small>₴120 / stem</small></label>
+              <input type="radio" name="flower" id="fl-rose" value="rose" checked><label for="fl-rose">Roses<small>$3 / stem</small></label>
+              <input type="radio" name="flower" id="fl-peony" value="peony"><label for="fl-peony">Peony roses<small>$5 / stem</small></label>
+              <input type="radio" name="flower" id="fl-chrys" value="chrysanthemum"><label for="fl-chrys">Chrysanthemums<small>$3 / stem</small></label>
+              <input type="radio" name="flower" id="fl-carn" value="carnation"><label for="fl-carn">Carnations<small>$2 / stem</small></label>
+              <input type="radio" name="flower" id="fl-mix" value="mix"><label for="fl-mix">Florist's mix<small>$4 / stem</small></label>
             </div>
           </div>
           <div class="step" data-reveal>
@@ -65,14 +65,14 @@
           <div class="step" data-reveal>
             <h3><span>04</span>Wrapping</h3>
             <div class="seg">
-              <input type="radio" name="wrap" id="wr-wine" value="wine" checked><label for="wr-wine">Wine<small>₴150</small></label>
-              <input type="radio" name="wrap" id="wr-blush" value="blush"><label for="wr-blush">Blush<small>₴150</small></label>
-              <input type="radio" name="wrap" id="wr-white" value="white"><label for="wr-white">White tulle<small>₴120</small></label>
-              <input type="radio" name="wrap" id="wr-kraft" value="kraft"><label for="wr-kraft">Kraft<small>₴100</small></label>
+              <input type="radio" name="wrap" id="wr-wine" value="wine" checked><label for="wr-wine">Wine<small>$4</small></label>
+              <input type="radio" name="wrap" id="wr-blush" value="blush"><label for="wr-blush">Blush<small>$4</small></label>
+              <input type="radio" name="wrap" id="wr-white" value="white"><label for="wr-white">White tulle<small>$3</small></label>
+              <input type="radio" name="wrap" id="wr-kraft" value="kraft"><label for="wr-kraft">Kraft<small>$3</small></label>
             </div>
           </div>
           <div class="step" data-reveal>
-            <h3><span>05</span>Greeting card <small class="muted" style="font-family:var(--f-body);font-size:12px">+₴50</small></h3>
+            <h3><span>05</span>Greeting card <small class="muted" style="font-family:var(--f-body);font-size:12px">+$2</small></h3>
             <div class="field"><label class="visually-hidden" for="note">Card text</label><textarea id="note" name="note" maxlength="120" placeholder="For example: “You are my spring” ✿"></textarea></div>
             <div class="counter-note" id="note-count">0/120</div>
           </div>
@@ -86,9 +86,9 @@
   </main>
 
   <script src="js/vendor/three.min.js"></script>
-  <script src="js/petal-textures.js"></script>
-  <script src="js/scene.js"></script>
-  <script src="js/data.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/petal-textures.js?v=4"></script>
+  <script src="js/scene.js?v=4"></script>
+  <script src="js/data.js?v=4"></script>
+  <script src="js/main.js?v=4"></script>
 </body>
 </html>
