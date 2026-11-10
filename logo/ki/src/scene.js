@@ -192,8 +192,10 @@ const envTex = scene.environment;
 // ---------- exact 2D logo ----------
 const LOGO_PATH = new Path2D('M169 320H323V486L463 320H640L479 512L554 601L681 451H854L640 704H461L398 626C384 609 372 600 356 600C337 600 323 615 323 638V704H169Z');
 const S2 = 1080 / 1024 * 1.0; // logo scale so frame height matches source square
-function draw2D(t, alpha) {
-  const c = octx; c.save(); c.globalAlpha = alpha;
+const off2 = document.createElement('canvas'); off2.width = W; off2.height = H; const o2 = off2.getContext('2d');
+function draw2D(t, alpha) { draw2Dto(o2, t); octx.save(); octx.globalAlpha = alpha; octx.drawImage(off2, 0, 0); octx.restore(); }
+function draw2Dto(c, t) {
+  c.save(); c.setTransform(1, 0, 0, 1, 0, 0);
   c.fillStyle = LIME; c.fillRect(0, 0, W, H);
   // stamp pulse: squash/overshoot around logo center
   const k = t - 7.5; const pulse = k > 0 ? spring(k, 16, 5.5) : 0;
@@ -217,13 +219,13 @@ function overlay(t) {
     const g = c.createRadialGradient(W / 2, H / 2, H * 0.4, W / 2, H / 2, H); g.addColorStop(0, 'rgba(20,33,10,0)'); g.addColorStop(1, 'rgba(20,33,10,0.35)');
     c.fillStyle = g; c.fillRect(0, 0, W, H); c.globalCompositeOperation = 'overlay'; c.drawImage(grain[Math.floor(t * 24) % 6], 0, 0, W, H); c.restore();
   }
-  const a2 = sstep(7.3, 7.45, t); if (a2 > 0) draw2D(t, a2);
+  const a2 = sstep(7.17, 7.25, t); if (a2 > 0) draw2D(t, a2);
 }
 
 function camSpeed(t) { const a = camAt(t), b = camAt(t + 1 / FPS); return a.pos.distanceTo(b.pos) / Math.max(1, a.d / 12) + a.tgt.distanceTo(b.tgt) * 1.5; }
 window.renderFrame = (i, maxSub = 6) => {
   const t = i / FPS;
-  if (t >= 7.45) { overlay(t); return 0; }
+  if (t >= 7.25) { overlay(t); return 0; }
   const fast = (t > 1.55 && t < 3.15) || (t > 3.8 && t < 4.65);
   const n = Math.max(1, Math.min(maxSub, Math.ceil(camSpeed(t) * 12 + (fast ? 4 : 0))));
   const shutter = 0.5 / FPS;
