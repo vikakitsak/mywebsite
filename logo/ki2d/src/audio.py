@@ -1,5 +1,5 @@
 import numpy as np, wave
-SR=48000; DUR=6.0; N=int(SR*DUR)
+SR=48000; DUR=8.0; N=int(SR*DUR)
 L=np.zeros(N); R=np.zeros(N)
 rng=np.random.default_rng(5)
 def t_(d): return np.arange(int(d*SR))/SR
@@ -74,40 +74,50 @@ def sweep(d,f0,f1,shape=1.0):
     t=t_(d); u=t/d; f=f0*(f1/f0)**(u**shape); return np.sin(2*np.pi*np.cumsum(f)/SR)*np.sin(np.pi*u)**0.6
 def thud(d=0.5):
     t=t_(d); ph=2*np.pi*np.cumsum(50+140*np.exp(-t*35))/SR; return np.tanh(1.5*np.sin(ph)*np.exp(-t/0.18))
-# 0-0.5 fall whistle
-add(sweep(0.5,1600,500,0.8),0,0.12,pan=-0.3)
-# hit0 + stem spring + launch
-add(thud(),0.5,0.9); add(bonk(196),0.5,0.5); add(mallet(nf(67)),0.5,0.35)
-add(sweep(0.25,150,700,1.0),0.5,0.25)                 # spring stretch
-add(sweep(0.18,600,1400,0.6),0.75,0.15,pan=-0.2)       # launch pew
-# arm slide
-add(whoosh(0.24,1500,5000),0.97,0.3,pan=0.1); add(click(2200),1.2,0.2)
-add(bonk(247),1.25,0.5,pan=0.1); add(mallet(nf(71)),1.25,0.35,pan=0.1)
+# opening: slice + split
+add(sweep(0.2,4000,9000,0.5),0.12,0.12); add(click(6000),0.12,0.25)
+add(whoosh(0.4,300,2500),0.28,0.4); add(thud(0.4),0.3,0.4)
+add(pad([55,62,67,71],1.0,cut=1500,att=0.3,rel=0.3),0.3,0.18)
+add(sweep(0.58,1600,500,0.8),0.42,0.12,pan=-0.3)
+# hit0 + stem spring
+add(thud(),1.0,0.9); add(bonk(196),1.0,0.5); add(mallet(nf(67)),1.0,0.35)
+add(sweep(0.25,150,700,1.0),1.0,0.25)
+add(sweep(0.18,600,1400,0.6),1.25,0.15,pan=-0.2)
+# drawbridge creak-up + seesaw
+add(sweep(0.32,180,520,1.0),1.38,0.18,pan=0.1); add(whoosh(0.3,800,3500),1.38,0.25,pan=0.1); add(click(1800),1.7,0.25)
+add(bonk(247),1.75,0.5,pan=0.1); add(mallet(nf(71)),1.75,0.35,pan=0.1)
+add(sweep(0.15,300,180,1.0),1.75,0.15,pan=0.1); add(sweep(0.2,700,1600,0.6),1.86,0.15,pan=0.2)  # seesaw fling
 # band ramp
-add(whoosh(0.3,500,3500),1.46,0.3,pan=0.35); add(sweep(0.3,200,500,1.0),1.46,0.15,pan=0.3)
-add(bonk(294),1.75,0.5,pan=0.35); add(mallet(nf(74)),1.75,0.35,pan=0.35)
-add(bonk(392,0.18),2.0,0.3,pan=0.35); add(mallet(nf(79),0.4),2.0,0.25,pan=0.35)
-add(bonk(494,0.14),2.2,0.18,pan=0.35); add(mallet(nf(83),0.4),2.2,0.15,pan=0.35)
-# groove 2.0-3.25 (G -> Em)
-for st,d,ns,root in ((2.0,1.0,[55,59,62,67],43),(3.0,0.5,[52,55,59,64],40)):
+add(whoosh(0.3,500,3500),1.96,0.3,pan=0.35); add(sweep(0.28,200,500,1.0),1.97,0.15,pan=0.3)
+add(bonk(294),2.25,0.5,pan=0.35); add(mallet(nf(74)),2.25,0.35,pan=0.35)
+add(bonk(392,0.18),2.5,0.3,pan=0.35); add(mallet(nf(79),0.4),2.5,0.25,pan=0.35)
+add(bonk(494,0.14),2.7,0.18,pan=0.35); add(mallet(nf(83),0.4),2.7,0.15,pan=0.35)
+# groove 2.5-3.75
+for st,d,ns,root in ((2.5,1.0,[55,59,62,67],43),(3.5,0.5,[52,55,59,64],40)):
     add(pad(ns,d+0.05,cut=2000,att=0.03,rel=0.08),st,0.14)
     for k in range(int(d/0.25)): add(bass(nf(root+(12 if k%2 else 0))),st+k*0.25,0.45)
-for tb in (2.5,3.0): add(kick(),tb,0.75)
-for tb in (2.0,2.5,3.0): add(hat(op=True),tb+0.25,0.12,pan=0.2)
-add(clap(),2.5,0.3); add(clap(),3.0,0.25)
-for i,(dt,n) in enumerate([(2.375,79),(2.625,76),(2.875,74),(3.125,71)]): add(mallet(nf(n),0.4),dt,0.12,pan=-0.3+0.2*i)
-add(bonk(440,0.15),2.75,0.22,pan=0.35); add(bonk(523,0.15),3.0,0.26,pan=0.35)
+for tb in (3.0,3.5): add(kick(),tb,0.75)
+for tb in (2.5,3.0,3.5): add(hat(op=True),tb+0.25,0.12,pan=0.2)
+add(clap(),3.0,0.3); add(clap(),3.5,0.25)
+add(bonk(440,0.15),3.25,0.22,pan=0.35); add(bonk(523,0.15),3.5,0.26,pan=0.35)
 # anticipation + big hop
-add(sweep(0.25,300,900,1.5),3.25,0.18)
-add(sweep(0.25,500,1800,0.5),3.5,0.22); add(bonk(330,0.2),3.5,0.3)
-add(sweep(0.4,1800,400,1.6),3.6,0.12)
-add(whoosh(0.2,800,4000,rev=True),3.8,0.25)
-# big landing
-add(thud(0.8),4.0,1.0); add(kick(boom=True),4.0,0.7); add(clap(),4.0,0.5)
-add(pad([43,55,59,62,66,69],2.0,cut=3000,att=0.005,rel=1.6),4.0,0.28); add(bass(nf(31),1.9),4.0,0.4)
-for i,n in enumerate([79,83,86,90]): add(mallet(nf(n),1.2),4.0+i*0.04,0.14,pan=-0.3+0.2*i)
-for k in range(10): add(click(5000+300*(k%4)),4.02+k*0.02,0.05,pan=np.sin(k)*0.7)  # burst sparkle
-for i,(dt,n) in enumerate([(4.75,83),(5.0,86),(5.25,91)]): add(mallet(nf(n),0.6),dt,0.1*(1-0.2*i),pan=0.3)
+add(sweep(0.25,300,900,1.5),3.75,0.18)
+add(sweep(0.25,500,1800,0.5),4.0,0.22); add(bonk(330,0.2),4.0,0.3)
+add(sweep(0.4,1800,400,1.6),4.1,0.12); add(whoosh(0.2,800,4000,rev=True),4.3,0.25)
+# big landing + jelly
+add(thud(0.8),4.5,1.0); add(kick(boom=True),4.5,0.7); add(clap(),4.5,0.5)
+add(pad([43,55,59,62,66,69],3.4,cut=3000,att=0.005,rel=2.6),4.5,0.26); add(bass(nf(31),1.9),4.5,0.4)
+for i,n in enumerate([79,83,86,90]): add(mallet(nf(n),1.2),4.5+i*0.04,0.14,pan=-0.3+0.2*i)
+for k in range(10): add(click(5000+300*(k%4)),4.52+k*0.02,0.05,pan=np.sin(k)*0.7)
+# lockup slide + dot hop
+add(whoosh(0.6,400,2500),5.0,0.3,pan=-0.4); add(bonk(392,0.15),5.45,0.22,pan=-0.3)
+# name letters pop
+for i in range(14): add(click(3000+200*(i%5)),5.35+i*0.035+(0.08 if i>=8 else 0)+0.08,0.08,pan=0.3)
+# tittles bounce
+for i,f in enumerate([880,988,1175]): add(bonk(f,0.15),5.35+0.45+i*0.12+0.23,0.2,pan=0.4)
+# tagline shimmer + outro motif
+add(whoosh(0.7,4000,10000),6.1,0.08,pan=0.2)
+for i,(dt,n) in enumerate([(6.0,79),(6.25,83),(6.5,86),(6.75,91)]): add(mallet(nf(n),0.8),dt,0.1*(1-0.15*i),pan=0.3*np.sin(i))
 # ---------- reverb + master ----------
 def reverb(x,dec=1.6,mix=0.22,seed=1):
     ir_t=t_(dec*1.5); ir=np.random.default_rng(seed).standard_normal(len(ir_t))*np.exp(-ir_t/(dec/6.9)*1.0)
