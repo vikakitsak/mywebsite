@@ -152,6 +152,22 @@ function tumble(i, t, q) {
 
 // кожна формація: (i, t, out{p, q, s, w}) — позиція, орієнтація, масштаб, вага орієнтації
 const F = {
+  // petals scattered over the whole screen at different depths:
+  // about a third float in front of the logo, the rest drift behind it
+  scatter(i, t, o) {
+    const front = r(i, 0) < 0.32;
+    const z = front ? 0.6 + r(i, 1) * 3.4 : -0.6 - r(i, 1) * 6;
+    const spread = (camera.position.z - z) / camera.position.z; // farther petals need a wider area to fill the screen
+    // stratified grid so there are no big empty patches
+    const cols = 26, rows = Math.ceil(N / cols);
+    const gx = ((i % cols) + r(i, 2)) / cols, gy = (Math.floor(i / cols) + r(i, 3)) / rows;
+    o.p.set(
+      ctx.cx + (gx * 2 - 1) * ctx.hw * 1.08 * spread + Math.sin(t * 0.3 + r(i, 4) * 6.28) * 0.35,
+      (gy * 2 - 1) * ctx.hh * 1.08 * spread + Math.cos(t * 0.25 + r(i, 5) * 6.28) * 0.3,
+      z,
+    );
+    o.s = (front ? 0.3 + r(i, 6) * 0.3 : 0.36 + r(i, 6) * 0.4) * ctx.scale; o.w = 0;
+  },
   // пелюстки падають і кружляють на вітрі
   drift(i, t, o) {
     const H = ctx.hh * 2.8;
@@ -169,8 +185,9 @@ const F = {
     const a = r(i, 1) * 6.283 + t * (0.5 / (0.5 + rr * 0.3));
     o.p.set(
       ctx.cx + Math.cos(a) * rr * 1.38 * ctx.scale,
-      (Math.sin(a) * rr * 0.44 + (r(i, 2) - 0.5) * 0.7 + Math.sin(t * 0.8 + i) * 0.08) * ctx.scale,
-      Math.sin(a) * rr * 0.7 - 1.2,
+      (Math.sin(a) * rr * 0.44 + (r(i, 2) - 0.5) * 0.7 + Math.sin(t * 0.8 + i) * 0.08 - 0.12) * ctx.scale + (small() ? ctx.hh * 0.3 : 0), // on phones the logo sits higher
+      // the lower half of the ring comes towards the viewer, so petals fill the bottom of the screen as much as the top
+      -Math.sin(a) * rr * 0.7 - 1.2,
     );
     o.s = (0.3 + r(i, 5) * 0.4) * ctx.scale; o.w = 0;
   },
@@ -241,6 +258,54 @@ const F = {
     o.s = (0.2 + r(i, 5) * 0.2) * ctx.scale; o.w = 0.9;
   },
 };
+
+/* ---------- hero logo inside the 3D scene ----------
+   The page still has the normal logo <img> (it keeps the layout and the scroll
+   animation from main.js); we hide it and draw the same logo on a 3D plane that
+   copies its position, size and opacity every frame. */
+const heroLogoEl = document.querySelector('.hero__logo');
+let logoPlane = null;
+if (heroLogoEl && window.FLORIS_LOGO) {
+  const L = window.FLORIS_LOGO;
+  const cv = document.createElement('canvas');
+  const scale = 2048 / L.w;
+  cv.width = 2048; cv.height = Math.ceil(L.h * scale);
+  const g = cv.getContext('2d');
+  g.setTransform(scale, 0, 0, scale, -L.x * scale, -L.y * scale);
+  g.fillStyle = '#ffffff';
+  g.fill(new Path2D(L.d), 'evenodd');
+  const tex = new THREE.CanvasTexture(cv);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 8;
+  logoPlane = new THREE.Mesh(
+    new THREE.PlaneGeometry(1, 1),
+    new THREE.MeshBasicMaterial({ map: tex, transparent: true, alphaTest: 0.02, toneMapped: false }),
+  );
+  scene.add(logoPlane);
+  document.documentElement.classList.add('logo-3d');
+}
+const LP = { l: new THREE.Vector3(), r: new THREE.Vector3(), t: new THREE.Vector3(), b: new THREE.Vector3() };
+const lpRay = new THREE.Raycaster(), lpNdc = new THREE.Vector2(), lpPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+function screenToWorld(x, y, out) {
+  lpNdc.set((x / innerWidth) * 2 - 1, -(y / innerHeight) * 2 + 1);
+  lpRay.setFromCamera(lpNdc, camera);
+  lpRay.ray.intersectPlane(lpPlane, out);
+}
+function placeLogo() {
+  if (!logoPlane) return;
+  const rect = heroLogoEl.getBoundingClientRect();
+  const op = parseFloat(getComputedStyle(heroLogoEl).opacity) * 0.96;
+  logoPlane.visible = rect.bottom > 0 && op > 0.01;
+  if (!logoPlane.visible) return;
+  // project the logo's on-screen edges onto the z = 0 plane through the (moving) camera
+  camera.updateMatrixWorld();
+  const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2;
+  screenToWorld(rect.left, cy, LP.l); screenToWorld(rect.right, cy, LP.r);
+  screenToWorld(cx, rect.top, LP.t); screenToWorld(cx, rect.bottom, LP.b);
+  logoPlane.position.set((LP.l.x + LP.r.x) / 2, (LP.t.y + LP.b.y) / 2, 0);
+  logoPlane.scale.set(LP.l.distanceTo(LP.r), LP.t.distanceTo(LP.b), 1);
+  logoPlane.material.opacity = op;
+}
 
 /* ---------- прив'язка до секцій сторінки ---------- */
 let anchors = [];
@@ -439,6 +504,7 @@ function loop() {
     if (diff < 0.01) colorsDirty = false;
   }
 
+  placeLogo();
   renderer.render(scene, camera);
   requestAnimationFrame(loop);
 }
