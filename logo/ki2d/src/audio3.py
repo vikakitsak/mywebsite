@@ -83,13 +83,13 @@ for i,(dt,n) in enumerate([(0.1,67),(0.4,71),(0.7,74),(1.0,79)]): add(mallet(nf(
 # S2: others fall, Vi + Ki gather, dots merge
 add(sweep(0.6,1400,250,0.7),1.5,0.12,pan=0.2)
 for k in range(5): add(thud(0.25)*0.6,1.75+k*0.07,0.12,pan=-0.5+0.25*k)
-add(whoosh(0.85,400,3000),1.9,0.32)
-add(blip(988,0.06),2.05,0.12,pan=-0.3); add(blip(1175,0.06),2.11,0.12,pan=0.3)
-add(bonk(587,0.25),2.62,0.35); add(mallet(nf(86),0.8),2.62,0.18)
+add(whoosh(0.45,600,2500),1.8,0.25); add(bonk(392,0.2),2.25,0.35); add(mallet(nf(79),0.6),2.25,0.2); add(bonk(494,0.2),2.3,0.3,pan=0.3)
+add(whoosh(0.6,400,3000),2.45,0.32)
+add(blip(988,0.06),2.5,0.12,pan=-0.3); add(blip(1175,0.06),2.56,0.12,pan=0.3)
+add(bonk(587,0.25),2.95,0.35); add(mallet(nf(86),0.8),2.95,0.18)
 for tb in (2.0,2.5): add(hat(op=True),tb+0.25,0.1,pan=0.2)
 # S3: morph to geometry + captions
-add(whoosh(0.7,2000,9000),2.75,0.14); add(sweep(0.7,400,1200,1.0),2.75,0.08)
-for i in range(3): add(click(3500+400*i),3.0+i*0.08,0.18,pan=-0.5+0.5*i)
+add(whoosh(0.5,2000,9000),3.05,0.14); add(sweep(0.5,400,1200,1.0),3.05,0.08)
 add(pad([52,55,59,64],1.1,cut=1800,att=0.05,rel=0.2),3.0,0.15)
 for k in range(4): add(bass(nf(40+(12 if k%2 else 0))),3.0+k*0.25,0.4)
 add(kick(),3.0,0.7); add(hat(op=True),3.25,0.12)
@@ -112,8 +112,9 @@ for i,n in enumerate([79,83,86,90]): add(mallet(nf(n),1.2),6.0+i*0.04,0.13,pan=-
 for k in range(10): add(click(5000+300*(k%4)),6.02+k*0.02,0.05,pan=np.sin(k)*0.7)
 # lockup
 add(whoosh(0.6,400,2500),6.5,0.3,pan=-0.4); add(bonk(392,0.15),6.95,0.22,pan=-0.3)
-for i in range(15): add(click(3000+200*(i%5)),6.85+i*0.035+(0.08 if i>=9 else 0)+0.08,0.08,pan=0.3)
-for i,f in enumerate([880,988,1109,1319]): add(bonk(f,0.15),6.85+0.45+i*0.12+0.23,0.2,pan=0.4)
+for j,dt in enumerate([0,0.06,0.1,0.16]): add(bonk(523+60*j,0.12),6.85+dt+0.12,0.14,pan=0.3)
+for i in range(11): add(click(3000+200*(i%5)),6.85+0.42+i*0.04+0.08,0.07,pan=0.3)
+for i,dt in enumerate([0.2,0.7,0.8,0.3]): add(bonk([880,988,1109,1319][i],0.15),6.85+dt+0.23,0.2,pan=0.4)
 add(whoosh(0.7,4000,10000),7.6,0.08,pan=0.2)
 for i,(dt,n) in enumerate([(7.5,79),(7.75,83),(8.0,86),(8.25,91)]): add(mallet(nf(n),0.9),dt,0.1*(1-0.15*i),pan=0.3*np.sin(i))
 # ---------- reverb + master ----------

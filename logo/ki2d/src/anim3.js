@@ -24,7 +24,7 @@ const BOX = { K: [169, 320, 641, 704], V: [277, 486, 824, 704], i: [468, 320, 85
 const SEP = { K: -400, V: 0, i: 420 };
 
 // ---------- timeline (120 BPM) ----------
-const T = { nameIn: 0.1, fall: 1.5, gather: [1.9, 2.75], morph: [2.75, 3.45], caps: [3.0, 3.75], kMerge: [3.62, 4.0], iMerge: [4.12, 4.5], stamp: 5.0,
+const T = { nameIn: 0.1, fall: 1.5, pair: [1.8, 2.25], gather: [2.45, 3.05], morph: [3.05, 3.55], kMerge: [3.62, 4.0], iMerge: [4.12, 4.5], stamp: 5.0,
   hopUp: 5.5, hopLand: 6.0, lock: [6.5, 7.15], name2: 6.85, tag: 7.6 };
 
 // ---------- camera ----------
@@ -55,6 +55,10 @@ function computeLayout() {
   // world coords for S1 (camera ~identity, s=1 at center (521,545))
   let x = 521 - total / 2; const base = 545 + FS * 0.36;
   const letters = [...NAME].map((ch, i) => { const L = { ch, i, x, base, w: ws[i] }; x += ws[i]; return L; });
+  const PAIR_MS = 1.3;
+  // centered pair "Vi  Ki" (bigger), used as a held beat
+  const MS = 1.3; const pairStr = ['V', 'i', ' ', 'K', 'i']; const pw = pairStr.map(ch => c.measureText(ch).width * MS); const ptot = pw.reduce((a, b) => a + b, 0) + 40;
+  let px = 521 - ptot / 2; const pmap = {}; [0, 1, null, 10, 11].forEach((idx, j) => { if (idx !== null) pmap[idx] = px; px += pw[j] + (j === 2 ? 40 : 0); });
   // ink boxes for kept glyphs
   for (const L of letters) if (KEEP[L.i] !== undefined) { const m = c.measureText(L.ch === 'i' ? 'ı' : L.ch); L.ink = { l: m.actualBoundingBoxLeft, r: m.actualBoundingBoxRight, a: m.actualBoundingBoxAscent }; }
   // lockup
@@ -64,7 +68,7 @@ function computeLayout() {
   const lk = [], tit = [];
   ['Vıktorııa', 'Kıtsak'].forEach((word, li) => { let xx = nameX; const b = top + 86 + li * 122 + 4;
     for (const ch of word) { const w = c.measureText(ch).width; lk.push({ ch, x: xx, base: b, li }); if (ch === 'ı') tit.push({ x: xx + w / 2, base: b }); xx += w; } });
-  layout = { letters, K, logoCX: left + logoW / 2, cy, lk, tit, tagY: top + logoH + 92 };
+  layout = { letters, pmap, MS, K, logoCX: left + logoW / 2, cy, lk, tit, tagY: top + logoH + 92 };
 }
 // glyph target transform: map glyph ink box onto geometric box (separated position)
 function glyphTarget(L) { const key = KEEP[L.i]; const [x0, y0, x1, y1] = BOX[key]; const dx = SEP[key];
@@ -149,17 +153,24 @@ function drawScene(t) {
         c.translate(L.x + L.w / 2, L.base + y - FS * 0.35 * (1 - pop) * 0); c.rotate(rot); c.translate(-L.w / 2, 0);
         c.translate(0, (1 - pop) * 60); c.globalAlpha = clamp(u * 3); c.fillText(L.ch, 0, 0);
       } else {
-        const g = glyphTarget(L); const gd = { V: 0, i: 0.06, K: 0.12 }[KEEP[L.i]]; const m = easeInOutQuint((t - T.gather[0] - gd) / (T.gather[1] - T.gather[0] - 0.12));
-        // squash hop right before gathering (anticipation)
+        const g = glyphTarget(L); const key = KEEP[L.i]; const gd = { V: 0, i: 0.06, K: 0.12 }[key];
         const ant = spring(t - T.fall, 18, 7) * 0.06;
-        const lift = { K: -260, V: 120, i: -60 }[KEEP[L.i]] * Math.sin(Math.PI * clamp(m)); const base = lerp(L.base, g.base, m) + lift;
-        const sx = lerp(1, g.sx, m), sy = lerp(1, g.sy, m);
-        c.translate(lerp(L.x, g.x - L.ink.l * g.sx, m) + L.ink.l * lerp(1, g.sx, m), base);
-        if (KEEP[L.i] === 'i') c.transform(1, 0, -0.843 * m, 1, 0, 0);
-        c.scale(sx * (1 + ant), sy * (1 - ant)); c.translate(0, (1 - pop) * 40);
+        // stage A: slide into the centered pair "Vi Ki" (bigger)
+        const mA = easeInOutCubic((t - T.pair[0] - (L.i > 9 ? 0.05 : 0)) / (T.pair[1] - T.pair[0]));
+        const ax = lerp(L.x, layout.pmap[L.i], mA), abase = lerp(L.base, 545 + FS * 0.36 * layout.MS, mA), as = lerp(1, layout.MS, mA);
+        // pair pulse on the held beat (Vi + Ki side by side)
+        const beat = spring(t - T.pair[1], 16, 6) * 0.06;
+        // stage B: to geometric targets
+        const m = easeInOutQuint((t - T.gather[0] - gd) / (T.gather[1] - T.gather[0] - 0.12));
+        const lift = { K: -260, V: 120, i: -60 }[key] * Math.sin(Math.PI * clamp(m)); const base = lerp(abase, g.base, m) + lift;
+        const sx = lerp(as, g.sx, m), sy = lerp(as, g.sy, m);
+        c.translate(lerp(ax, g.x - L.ink.l * g.sx, m) + L.ink.l * sx, base);
+        if (key === 'i') c.transform(1, 0, -0.843 * m, 1, 0, 0);
+        c.scale(sx * (1 + ant + beat), sy * (1 - ant + beat)); c.translate(-L.ink.l, (1 - pop) * 40);
         const ga = clamp(u * 3) * (1 - sstep(0.15, 0.7, morphU)); c.globalAlpha = ga; c.fillText(L.ch === 'i' ? 'ı' : L.ch, 0, 0);
         if (L.ch === 'i') { c.restore(); c.save(); c.globalAlpha = ga;
-          const r0 = FS * 0.088, x0 = L.x + L.w / 2, y0 = L.base - FS * 0.765 + r0;
+          const mA2 = easeInOutCubic((t - T.pair[0] - (L.i > 9 ? 0.05 : 0)) / (T.pair[1] - T.pair[0])); const sc = lerp(1, layout.MS, mA2) * (1 + spring(t - T.pair[1], 16, 6) * 0.06);
+          const r0 = FS * 0.088 * sc, x0 = lerp(L.x + L.w / 2, layout.pmap[L.i] + L.w * layout.MS / 2, mA2), y0 = lerp(L.base, 545 + FS * 0.36 * layout.MS, mA2) - FS * 0.765 * sc + r0;
           const dm = easeOutBack(clamp((t - T.gather[0] - 0.06) / (T.gather[1] - T.gather[0] - 0.12)), 1.4);
           const arcY = -120 * Math.sin(Math.PI * clamp(dm));
           c.beginPath(); c.arc(lerp(x0, DOT[0] + SEP.i, dm), lerp(y0, DOT[1], dm) + arcY, lerp(r0, DOT[2], clamp(dm)), 0, Math.PI * 2); c.fill(); }
@@ -178,13 +189,6 @@ function drawScene(t) {
       if (t > T.iMerge[0] && t < T.iMerge[1] + 0.12) drawGeo(c, t - lag, 'i', 0, 1, al);
     }
     for (const key of ['V', 'K', 'i']) drawGeo(c, t, key, tint, easeInOutCubic(morphU * 1.1), sA);
-    // captions under each letter
-    const capA = sstep(T.caps[0], T.caps[0] + 0.3, t) * (1 - sstep(T.caps[1], T.caps[1] + 0.25, t));
-    if (capA > 0) { c.font = '600 44px "Inter Display"'; c.textAlign = 'center';
-      [['K', 'K · Kitsak'], ['V', 'V · Viktoriia'], ['i', 'i · Vi + Ki']].forEach(([k, txt], j) => {
-        const [x0, , x1] = BOX[k]; const u = clamp((t - T.caps[0] - j * 0.08) / 0.35);
-        c.globalAlpha = capA * clamp(u * 2); c.fillText(txt, (x0 + x1) / 2 + partDX(k, t), FLOOR + 92 + (1 - easeOutBack(u)) * 30); });
-      c.textAlign = 'left'; c.globalAlpha = 1; }
   }
   // --- S5+: the finished logo (single solid shape) ---
   if (t >= T.stamp) {
@@ -202,10 +206,10 @@ function drawScene(t) {
   // --- lockup text (screen space) ---
   if (t > T.name2 - 0.05) {
     c.save(); c.font = `800 116px "Inter Display"`; c.fillStyle = INK;
-    layout.lk.forEach((L, i) => { const t0 = T.name2 + i * 0.035 + L.li * 0.08; const u = clamp((t - t0) / 0.5); if (u <= 0) return;
+    layout.lk.forEach((L, i) => { const j = L.li === 0 ? i : i - 9; const first = j <= 1; const t0 = first ? T.name2 + j * 0.06 + L.li * 0.1 : T.name2 + 0.42 + (j - 2) * 0.04 + L.li * 0.06; const u = clamp((t - t0) / 0.5); if (u <= 0) return;
       const e = easeOutBack(u, 2.4); c.save(); c.beginPath(); c.rect(L.x - 20, L.base - 128, 162, 162); c.clip();
       c.translate(L.x, L.base + (1 - e) * 122); c.rotate((1 - easeOutExpo(u)) * 0.25); c.fillText(L.ch, 0, 0); c.restore(); });
-    layout.tit.forEach((d, i) => { const t0 = T.name2 + 0.45 + i * 0.12; if (t < t0) return; const u = clamp((t - t0) / 0.42);
+    layout.tit.forEach((d, i) => { const t0 = (i === 0 || i === 3) ? T.name2 + 0.2 + (i === 3 ? 0.1 : 0) : T.name2 + 0.7 + (i - 1) * 0.1; if (t < t0) return; const u = clamp((t - t0) / 0.42);
       const r = 116 * 0.088, restY = d.base - 116 * 0.765; let y;
       if (u < 0.55) { const v = u / 0.55; y = lerp(restY - 140, restY, v * v); } else { const v = (u - 0.55) / 0.45; y = restY - 26 * 4 * v * (1 - v); }
       const sq = (u > 0.53 && u < 0.66) ? Math.sin((u - 0.53) / 0.13 * Math.PI) * 0.35 : 0;
