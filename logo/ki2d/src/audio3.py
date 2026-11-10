@@ -1,5 +1,5 @@
 import numpy as np, wave
-SR=48000; DUR=10.0; N=int(SR*DUR)
+SR=48000; DUR=11.0; N=int(SR*DUR)
 L=np.zeros(N); R=np.zeros(N)
 rng=np.random.default_rng(5)
 def t_(d): return np.arange(int(d*SR))/SR
@@ -74,6 +74,14 @@ def sweep(d,f0,f1,shape=1.0):
     t=t_(d); u=t/d; f=f0*(f1/f0)**(u**shape); return np.sin(2*np.pi*np.cumsum(f)/SR)*np.sin(np.pi*u)**0.6
 def thud(d=0.5):
     t=t_(d); ph=2*np.pi*np.cumsum(50+140*np.exp(-t*35))/SR; return np.tanh(1.5*np.sin(ph)*np.exp(-t/0.18))
+_add=add
+def add(sig,t0,gain=1.0,pan=0.0):
+    _add(sig, t0+1.0 if t0>=2.4 else t0, gain, pan)
+# Vi Ki hold: dots hop together, soft pulse keeps the beat
+_add(bonk(784,0.12),2.6,0.18,pan=-0.2); _add(bonk(784,0.12),2.9,0.22,pan=0.2)
+_add(bonk(988,0.12),3.1,0.15,pan=-0.2); _add(bonk(988,0.12),3.38,0.18,pan=0.2)
+for tb in (2.5,3.0): _add(hat(op=True),tb+0.25,0.1,pan=0.2); _add(kick()*0.5,tb,0.35)
+_add(pad([55,59,62,67],1.25,cut=1500,att=0.1,rel=0.3),2.25,0.12)
 # S1: name pops in
 add(pad([55,59,62,67],1.9,cut=1300,att=0.4,rel=0.4),0.0,0.18)
 for i in range(16):

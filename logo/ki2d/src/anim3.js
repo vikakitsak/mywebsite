@@ -1,4 +1,4 @@
-const W = 1920, H = 1080, FPS = 60, DUR = 10;
+const W = 1920, H = 1080, FPS = 60, DUR = 11;
 const LIME = '#C8FF2E', INK = '#14210A';
 const cv = document.getElementById('c'), out = cv.getContext('2d');
 const buf = document.createElement('canvas'); buf.width = W; buf.height = H; const c = buf.getContext('2d');
@@ -24,17 +24,17 @@ const BOX = { K: [169, 320, 641, 704], V: [277, 486, 824, 704], i: [468, 320, 85
 const SEP = { K: -400, V: 0, i: 420 };
 
 // ---------- timeline (120 BPM) ----------
-const T = { nameIn: 0.1, fall: 1.5, pair: [1.8, 2.25], gather: [2.45, 3.05], morph: [3.05, 3.55], kMerge: [3.62, 4.0], iMerge: [4.12, 4.5], stamp: 5.0,
-  hopUp: 5.5, hopLand: 6.0, lock: [6.5, 7.15], name2: 6.85, tag: 7.6 };
+const T = { nameIn: 0.1, fall: 1.5, pair: [1.8, 2.25], gather: [3.45, 4.05], morph: [4.05, 4.55], kMerge: [4.62, 5.0], iMerge: [5.12, 5.5], stamp: 6.0,
+  hopUp: 6.5, hopLand: 7.0, lock: [7.5, 8.15], name2: 7.85, tag: 8.6, pairHops: [[2.6, 2.9, 38], [3.1, 3.38, 24]] };
 
 // ---------- camera ----------
 // screen = (world - (cx,cy)) * s rotated + (sx,sy)
 function camAt(t) {
-  let s = lerp(0.97, 1.0, sstep(0, 3.6, t)), cx = 521, cy = 545, rot = 0.012 * Math.sin(t * 0.9) * (1 - sstep(4.4, 5.0, t));
+  let s = lerp(0.97, 1.0, sstep(0, 4.6, t)), cx = 521, cy = 545, rot = 0.012 * Math.sin(t * 0.9) * (1 - sstep(5.4, 6.0, t));
   // push-ins on merges
   s *= 1 + 0.03 * spring(t - T.kMerge[1], 14, 5) + 0.03 * spring(t - T.iMerge[1], 14, 5);
   // settle on the finished logo
-  const fin = easeInOutCubic((t - 4.5) / 0.6); s = lerp(s, 1080 / 1024 * 0.95, fin); cx = lerp(cx, 511.5, fin); cy = lerp(cy, 512, fin);
+  const fin = easeInOutCubic((t - 5.5) / 0.6); s = lerp(s, 1080 / 1024 * 0.95, fin); cx = lerp(cx, 511.5, fin); cy = lerp(cy, 512, fin);
   const shake = spring(t - T.kMerge[1], 45, 10) * 9 + spring(t - T.iMerge[1], 45, 10) * 7 + spring(t - T.stamp, 45, 9) * 8 + spring(t - T.hopLand, 45, 9) * 9;
   rot += 0.012 * spring(t - T.hopLand, 30, 7);
   let sx = W / 2, sy = H / 2;
@@ -173,7 +173,9 @@ function drawScene(t) {
           const r0 = FS * 0.088 * sc, x0 = lerp(L.x + L.w / 2, layout.pmap[L.i] + L.w * layout.MS / 2, mA2), y0 = lerp(L.base, 545 + FS * 0.36 * layout.MS, mA2) - FS * 0.765 * sc + r0;
           const dm = easeOutBack(clamp((t - T.gather[0] - 0.06) / (T.gather[1] - T.gather[0] - 0.12)), 1.4);
           const arcY = -120 * Math.sin(Math.PI * clamp(dm));
-          c.beginPath(); c.arc(lerp(x0, DOT[0] + SEP.i, dm), lerp(y0, DOT[1], dm) + arcY, lerp(r0, DOT[2], clamp(dm)), 0, Math.PI * 2); c.fill(); }
+          let ph = 0, psq = 0; for (const [h0, h1, hh] of T.pairHops) { if (t >= h0 && t < h1) { const v = (t - h0) / (h1 - h0); ph = -hh * 4 * v * (1 - v); } const d = t - h1; if (d >= 0 && d < 0.1) psq = Math.sin(d / 0.1 * Math.PI) * 0.3; }
+          if (psq > 0) { const cxp = lerp(x0, DOT[0] + SEP.i, dm), cyp = lerp(y0, DOT[1], dm) + arcY + r0; c.translate(cxp, cyp); c.scale(1 + psq * 0.5, 1 - psq * 0.4); c.translate(-cxp, -cyp); }
+          c.beginPath(); c.arc(lerp(x0, DOT[0] + SEP.i, dm), lerp(y0, DOT[1], dm) + arcY + ph, lerp(r0, DOT[2], clamp(dm)), 0, Math.PI * 2); c.fill(); }
       }
       c.restore();
     }
