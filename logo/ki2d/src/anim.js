@@ -57,7 +57,7 @@ function anticip(t) { const d = T.bigUp - t; return d > 0 && d < 0.25 ? Math.sin
 const EV = [T.fall0, T.hit0, T.launch, T.land1, T.fling, T.land2, T.hop1, T.hop2, 3.0, 3.25, 3.5, T.bigUp, T.bigLand, T.lock[0] + 0.05, T.lock[0] + 0.45];
 
 // ---------- name lockup ----------
-const NAME = ['Vıktorıa', 'Kıtsak']; const FS = 116, LINE = 122; const TAG = 'Graphic Design  ·  3D  ·  Code';
+const NAME = ['Vıktorııa', 'Kıtsak']; const FS = 116, LINE = 122; const TAG = 'Graphic Design  ·  3D';
 let layout = null;
 function computeLayout() {
   c.font = `800 ${FS}px "Inter Display"`; const w1 = c.measureText(NAME[0]).width, w2 = c.measureText(NAME[1]).width;

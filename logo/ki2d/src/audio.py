@@ -112,9 +112,9 @@ for k in range(10): add(click(5000+300*(k%4)),4.52+k*0.02,0.05,pan=np.sin(k)*0.7
 # lockup slide + dot hop
 add(whoosh(0.6,400,2500),5.0,0.3,pan=-0.4); add(bonk(392,0.15),5.45,0.22,pan=-0.3)
 # name letters pop
-for i in range(14): add(click(3000+200*(i%5)),5.35+i*0.035+(0.08 if i>=8 else 0)+0.08,0.08,pan=0.3)
+for i in range(15): add(click(3000+200*(i%5)),5.35+i*0.035+(0.08 if i>=9 else 0)+0.08,0.08,pan=0.3)
 # tittles bounce
-for i,f in enumerate([880,988,1175]): add(bonk(f,0.15),5.35+0.45+i*0.12+0.23,0.2,pan=0.4)
+for i,f in enumerate([880,988,1109,1319]): add(bonk(f,0.15),5.35+0.45+i*0.12+0.23,0.2,pan=0.4)
 # tagline shimmer + outro motif
 add(whoosh(0.7,4000,10000),6.1,0.08,pan=0.2)
 for i,(dt,n) in enumerate([(6.0,79),(6.25,83),(6.5,86),(6.75,91)]): add(mallet(nf(n),0.8),dt,0.1*(1-0.15*i),pan=0.3*np.sin(i))
