@@ -141,8 +141,8 @@ function sNova(ctx, u) {
     for (const [i, t0] of letters) { const v = clamp((u - t0) / 0.5); if (v <= 0) continue; const e = easeOutBack(v, 1.8); const c = META.nova.comps[i];
       comp(Lc, 'nova', i, { ty: (1 - e) * (c.h + 40), sy: 1 + spring(u - t0 - 0.35, 18, 7) * 0.08, ay: 1, clip: (x, cc) => x.rect(-50, -400, cc.w + 100, cc.h + 400) }); }
     for (const [i, t0] of [[4, 1.75], [5, 2.0]]) { const v = clamp((u - t0) / 0.5); if (v <= 0) continue; const e = easeOutBack(v, 2.6);
-      comp(Lc, 'nova', i, { ax: 0.5, ay: 1, sx: e, sy: e, rot: (1 - e) * -0.7 }); }
-  }), clamp((u - 2.4) / 0.9), -0.4, 'rgba(255,255,255,0.55)');
+      comp(Lc, 'nova', i, { ax: 0.5, ay: 1, sx: e, sy: e, rot: (1 - e) * -0.7 + Math.sin((u - t0) * 2.4 + i) * 0.09 * sstep(0.6, 1.4, u - t0) }); }
+  }), u < 4.0 ? clamp((u - 2.4) / 0.9) : clamp((u - 4.2) / 0.9), -0.4, 'rgba(255,255,255,0.55)');
   // powder puffs at each letter base
   withLogo(ctx, 'nova', lc, () => { for (const [i, t0] of letters) { const d = u - t0 - 0.3; if (d < 0 || d > 0.8) continue; const c = META.nova.comps[i]; const r = rng(i * 13 + 1);
     for (let k = 0; k < 16; k++) { const a = Math.PI + r() * Math.PI, sp = 120 + r() * 260, e = easeOutExpo(d / 0.8); const rad = (14 + r() * 26) * (0.5 + e);
@@ -158,7 +158,7 @@ function sAdora(ctx, u, zoomOut = 0) {
   const lc = { s: lerp(0.95, 1.0, easeOutCubic(u / 4)) * (1 + zoomOut), x: cam.x * 0.25, rot: 0 };
   const sym = 0, letters = [[1, 1.7], [2, 1.78], [3, 1.86], [7, 1.94], [4, 1.94], [5, 2.02], [6, 2.1]];
   const c0 = META.adora.comps[sym]; const cx = c0.x + c0.w / 2, cy = c0.y + c0.h / 2;
-  const spin = lerp(-0.45, 0, easeOutCubic((u - 0.3) / 1.6)) + zoomOut * 1.6;
+  const spin = lerp(-0.45, 0, easeOutCubic((u - 0.3) / 1.6)) + zoomOut * 1.6 + 0.035 * Math.max(0, u - 1.9);
   sheen(ctx, Lc => withLogo(Lc, 'adora', lc, () => {
     const rv = easeInOutCubic((u - 0.3) / 1.3);
     if (rv > 0) comp(Lc, 'adora', sym, { rot: spin, sx: lerp(0.88, 1, easeOutCubic(rv)), sy: lerp(0.88, 1, easeOutCubic(rv)), clip: (x, c) => { x.moveTo(c.w / 2, c.h / 2); x.arc(c.w / 2, c.h / 2, c.w, -Math.PI / 2 - spin, -Math.PI / 2 - spin + Math.PI * 2 * rv); x.closePath(); } });
@@ -169,7 +169,7 @@ function sAdora(ctx, u, zoomOut = 0) {
   }), clamp((u - 2.8) / 1.0), -0.9, 'rgba(255,250,235,0.6)');
   // star flares on the symbol's four stars + centre
   withLogo(ctx, 'adora', lc, () => { const R = c0.w * 0.335; const pts = [[0, -R], [R, 0], [0, R], [-R, 0], [0, 0]];
-    pts.forEach(([px, py], k) => { const t0 = 1.55 + k * 0.12 + (k === 4 ? 0.1 : 0); const d = u - t0; if (d < 0 || d > 0.7) return; const a = Math.sin(clamp(d / 0.7) * Math.PI);
+    pts.forEach(([px, py], k) => { const t1 = 1.55 + k * 0.12 + (k === 4 ? 0.1 : 0), t2 = 3.6 + [0, 2, 1, 3, 4][k] * 0.14; const t0 = u < t2 ? t1 : t2; const d = u - t0; if (d < 0 || d > 0.7) return; const a = Math.sin(clamp(d / 0.7) * Math.PI);
       const rx = Math.cos(spin) * px - Math.sin(spin) * py + cx, ry = Math.sin(spin) * px + Math.cos(spin) * py + cy;
       ctx.save(); ctx.translate(rx, ry); ctx.rotate(d * 1.5); ctx.globalAlpha = a; ctx.fillStyle = 'rgba(255,248,230,1)'; const L1 = 150 * a, w = 7;
       ctx.beginPath(); ctx.moveTo(0, -L1); ctx.lineTo(w, 0); ctx.lineTo(0, L1); ctx.lineTo(-w, 0); ctx.closePath(); ctx.fill();
@@ -188,9 +188,9 @@ function sFloris(ctx, u, zoomIn = 0) {
     const bw = easeInOutCubic((u - 0.35) / 0.9); if (bw > 0) comp(Lc, 'floris', 1, { clip: (x, c) => x.rect(-10, -10, (c.w + 20) * bw, c.h + 20) });
     const fv = clamp((u - 0.55) / 0.55); if (fv > 0) comp(Lc, 'floris', 0, { tx: (1 - easeOutBack(fv, 1.5)) * -500, alpha: sstep(0, 0.3, fv) });
     const sv = clamp((u - 1.0) / 0.55); if (sv > 0) comp(Lc, 'floris', 3, { tx: (1 - easeOutBack(sv, 1.5)) * 500, alpha: sstep(0, 0.3, sv) });
-    const ov = clamp((u - 1.25) / 0.4); if (ov > 0) { const c = META.floris.comps[2]; const y = -(1 - ov * ov) * 520; const sq = squash(u, 1.65, 1);
+    const ov = clamp((u - 1.25) / 0.4); if (ov > 0) { const c = META.floris.comps[2]; const hv = clamp((u - 3.5) / 0.4); const y = -(1 - ov * ov) * 520 - 90 * 4 * hv * (1 - hv); const sq = squash(u, 1.65, 1) + squash(u, 3.9, 0.6);
       comp(Lc, 'floris', 2, { ty: y, ay: 1, sx: 1 + sq * 0.12, sy: 1 - sq * 0.15, alpha: sstep(0, 0.2, ov) }); }
-  }), clamp((u - 2.1) / 1.1), -0.25, 'rgba(255,225,230,0.7)');
+  }), u < 4.0 ? clamp((u - 2.1) / 1.1) : clamp((u - 4.1) / 1.0), -0.25, 'rgba(255,225,230,0.7)');
   particles(ctx, u, 8, 6, 'rgba(255,170,180,0.16)', 80, 170, 60, -8, 1.6, cam);
 }
 // --- 4 · ASANI (20–25.5) ---
@@ -207,10 +207,10 @@ function sAsani(ctx, u, sink = 0) {
     if (lv > 0) comp(ctx, 'asani', 0, { clip: (x, c) => { const top = lerp(c.h + 30, -60, lv); const amp = 26 * (1 - lv) + 4; x.moveTo(-20, c.h + 40);
       for (let px = -20; px <= c.w + 20; px += 20) x.lineTo(px, top + Math.sin(px / 90 + u * 7) * amp + Math.sin(px / 37 - u * 5) * amp * 0.4); x.lineTo(c.w + 20, c.h + 40); x.closePath(); } });
     // falling i with splash
-    const iv = clamp((u - 1.9) / 0.35); if (iv > 0) { const sq = squash(u, 2.25, 1); comp(ctx, 'asani', 1, { ty: -(1 - iv * iv) * 700, ay: 1, sx: 1 + sq * 0.25, sy: 1 - sq * 0.25 + (iv < 1 ? 0.2 * iv : 0) }); }
+    const iv = clamp((u - 1.9) / 0.35); if (iv > 0) { const hv = clamp((u - 3.75) / 0.5); const sq = squash(u, 2.25, 1) + squash(u, 4.25, 0.7); comp(ctx, 'asani', 1, { ty: -(1 - iv * iv) * 700 - 160 * 4 * hv * (1 - hv), ay: 1, sx: 1 + sq * 0.25, sy: 1 - sq * 0.25 + (iv < 1 ? 0.2 * iv : 0) }); }
     // ripples & droplets at the landing spot (base of i)
     const ic = META.asani.comps[1]; const bx = ic.x + ic.w / 2, by = ic.y + ic.h;
-    for (let k = 0; k < 3; k++) { const d = u - 2.25 - k * 0.18; if (d < 0 || d > 1.4) continue; const e = easeOutCubic(d / 1.4);
+    for (let k = 0; k < 6; k++) { const d = u - (k < 3 ? 2.25 : 4.25) - (k % 3) * 0.18; if (d < 0 || d > 1.4) continue; const e = easeOutCubic(d / 1.4);
       ctx.save(); ctx.globalAlpha = (1 - e) * 0.7 * (1 - sink); ctx.strokeStyle = '#fff'; ctx.lineWidth = 6 * (1 - e) + 1; ctx.beginPath(); ctx.ellipse(bx, by + 30, 40 + e * 420, (40 + e * 420) * 0.22, 0, 0, 7); ctx.stroke(); ctx.restore(); }
     const r = rng(17); for (let k = 0; k < 12; k++) { const d = u - 2.25; if (d < 0 || d > 0.6) break; const a = -Math.PI / 2 + (r() - 0.5) * 2.2, sp = 260 + r() * 420;
       const x = bx + Math.cos(a) * sp * d, y = by + Math.sin(a) * sp * d + 1800 * d * d; ctx.fillStyle = '#fff'; ctx.globalAlpha = 1 - d / 0.6; ctx.beginPath(); ctx.arc(x, y, 9 + r() * 8, 0, 7); ctx.fill(); }
@@ -294,7 +294,7 @@ function drawFrame(ctx, t) {
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none';
   // T0: intro -> NOVA with powder burst at dot impact (3.25)
   if (t < 3.25) { sIntro(ctx, t); return; }
-  if (t < 3.9) { sNova(ctx, t - 3.5); powder(ctx, t - 3.25, W / 2 - 60, H * 0.62); grainV(ctx, t); return; }
+  if (t < 4.2) { sNova(ctx, t - 3.5); powder(ctx, t - 3.25, W / 2 - 60, H * 0.62); grainV(ctx, t); return; }
   // T1: whip-pan NOVA -> ADORA (8.8–9.2)
   if (t < 8.8) { sNova(ctx, t - 3.5); grainV(ctx, t); return; }
   if (t < 9.2) { const k = easeInOutQuint((t - 8.8) / 0.4); A.setTransform(1, 0, 0, 1, 0, 0); sNova(A, t - 3.5); B.setTransform(1, 0, 0, 1, 0, 0); sAdora(B, t - 9);
@@ -332,7 +332,7 @@ function jaws(ctx, c) { const hgt = c * H / 2; const tooth = 80; ctx.fillStyle =
 function grainV(ctx, t) { ctx.save(); ctx.globalCompositeOperation = 'overlay'; ctx.drawImage(grain[Math.floor(t * 24) % 6], 0, 0, W, H); ctx.restore(); }
 
 // discontinuities: don't blur across cuts
-const CUTS = [3.25, 3.9, 8.8, 9.2, 14.2, 14.7, 19.6, 20.2, 25.0, 25.5, 30.75, 31.0, 31.25, 33.75];
+const CUTS = [3.25, 4.2, 8.8, 9.2, 14.2, 14.7, 19.6, 20.2, 25.0, 25.5, 30.75, 31.0, 31.25, 33.75];
 window.renderFrame = (i, n = 6) => {
   const t = Math.round(i / FPS * 1e6) / 1e6; const shutter = 0.5 / FPS;
   for (let k = 0; k < n; k++) { let ts = t + (n === 1 ? 0 : (k / (n - 1) - 0.5) * shutter); for (const e of CUTS) if ((t >= e) !== (ts >= e)) ts = t;
