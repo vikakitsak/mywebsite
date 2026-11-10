@@ -225,6 +225,9 @@ body.cursor-label .cursor-dot { opacity: 0; }
 .hero__logo-wrap { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; z-index: 0; }
 .hero__logo { width: min(980px, 84vw); opacity: .96; filter: drop-shadow(0 30px 60px rgba(0,0,0,.45)); will-change: transform, opacity; }
 .hero__logo img { width: 100%; height: auto; }
+/* when WebGL works, the logo is drawn in 3D (so petals can fly behind and in front of it) */
+.logo-3d .hero__logo img { opacity: 0; }
+.logo-3d .hero__logo { filter: none; }
 .hero__inner { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 40px; height: 100%; min-height: calc(100svh - 170px); }
 .hero__top { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
 .hero__tagline { font-family: var(--f-serif); font-style: italic; font-size: clamp(26px, 3.4vw, 52px); line-height: 1.05; margin: 0 0 22px; max-width: 14ch; }
