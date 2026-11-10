@@ -169,8 +169,9 @@ const F = {
     const a = r(i, 1) * 6.283 + t * (0.5 / (0.5 + rr * 0.3));
     o.p.set(
       ctx.cx + Math.cos(a) * rr * 1.38 * ctx.scale,
-      (Math.sin(a) * rr * 0.44 + (r(i, 2) - 0.5) * 0.7 + Math.sin(t * 0.8 + i) * 0.08) * ctx.scale,
-      Math.sin(a) * rr * 0.7 - 1.2,
+      (Math.sin(a) * rr * 0.44 + (r(i, 2) - 0.5) * 0.7 + Math.sin(t * 0.8 + i) * 0.08 - 0.12) * ctx.scale + (small() ? ctx.hh * 0.3 : 0), // on phones the logo sits higher
+      // the lower half of the ring comes towards the viewer, so petals fill the bottom of the screen as much as the top
+      -Math.sin(a) * rr * 0.7 - 1.2,
     );
     o.s = (0.3 + r(i, 5) * 0.4) * ctx.scale; o.w = 0;
   },
