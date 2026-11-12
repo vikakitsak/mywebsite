@@ -3,7 +3,8 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
-from .common import ask_claude, log
+from .common import log
+from .llm import ask
 from . import channel as channel_agent
 from . import trends as trends_agent
 
@@ -58,7 +59,7 @@ def run(cfg: dict, trends: dict, channel: dict, history: list[dict]) -> Strategy
 
 Pick the {n} best next video idea(s). Aim for 35-55 second Shorts."""
     log(AGENT, "аналізую дані та вибираю тему…")
-    strategy = ask_claude(SYSTEM, prompt, Strategy, cfg)
+    strategy = ask(SYSTEM, prompt, Strategy, cfg)
     strategy.ideas = strategy.ideas[:n]
     for i in strategy.ideas:
         log(AGENT, f"тема: [{i.niche}] {i.topic}")

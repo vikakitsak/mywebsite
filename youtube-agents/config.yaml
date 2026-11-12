@@ -28,8 +28,13 @@ trends:
   max_duration_sec: 180   # що вважаємо Shorts
 
 llm:
-  model: claude-opus-5-5
-  effort: high
+  # Порядок моделей: перша доступна (з ключем) використовується, інші — запасні.
+  # gemini і groq — безкоштовні. claude — платний, найкращі сценарії (ключ ANTHROPIC_API_KEY).
+  providers: [gemini, groq, claude]
+  gemini_model: auto      # auto = найновіша Gemini Flash
+  groq_model: auto
+  claude_model: claude-opus-5-5
+  claude_effort: high
 
 voice:
   # Безкоштовні голоси Microsoft Edge. Інші варіанти:

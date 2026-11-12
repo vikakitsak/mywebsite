@@ -3,7 +3,8 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
-from .common import ask_claude, log
+from .common import log
+from .llm import ask
 from .strategist import VideoIdea
 
 AGENT = "Сценарист"
@@ -52,7 +53,7 @@ Hook idea: {idea.hook_idea}
 Target length: {idea.target_length_sec} seconds
 Proven-demand references (do NOT copy): {'; '.join(idea.inspired_by)}"""
     log(AGENT, f"пишу сценарій: {idea.topic}")
-    script = ask_claude(SYSTEM, prompt, Script, cfg)
+    script = ask(SYSTEM, prompt, Script, cfg)
     words = sum(len(s.text.split()) for s in script.scenes)
     log(AGENT, f"готово: «{script.title}», {len(script.scenes)} сцен, {words} слів")
     return script

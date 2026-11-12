@@ -57,7 +57,7 @@ def write_json(path: Path, data) -> None:
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-# ---------- Claude ----------
+# ---------- JSON-схеми для відповідей ШІ ----------
 
 def _strict_schema(model: type[BaseModel]) -> dict:
     """JSON-схема з pydantic, з розгорнутими $ref і additionalProperties=false."""
@@ -78,31 +78,3 @@ def _strict_schema(model: type[BaseModel]) -> dict:
         return node
 
     return resolve(schema)
-
-
-def ask_claude(system: str, prompt: str, schema: type[T], cfg: dict) -> T:
-    """Один запит до Claude, відповідь — валідований об'єкт pydantic."""
-    import anthropic
-
-    client = anthropic.Anthropic()  # ключ із ANTHROPIC_API_KEY
-    llm = cfg.get("llm", {})
-    with client.beta.messages.stream(
-        model=llm.get("model", "claude-opus-5-5"),
-        max_tokens=32000,
-        betas=["server-side-fallback-2026-07-01"],
-        fallbacks="default",  # якщо модель відмовить — запит автоматично піде на запасну
-        system=system,
-        messages=[{"role": "user", "content": prompt}],
-        output_config={
-            "effort": llm.get("effort", "high"),
-            "format": {"type": "json_schema", "schema": _strict_schema(schema)},
-        },
-    ) as stream:
-        msg = stream.get_final_message()
-
-    if msg.stop_reason == "refusal":
-        raise RuntimeError(f"Claude відмовився виконати запит: {msg.stop_details}")
-    if msg.stop_reason == "max_tokens":
-        raise RuntimeError("Відповідь Claude обрізана (max_tokens).")
-    text = "".join(b.text for b in msg.content if b.type == "text")
-    return schema.model_validate_json(text)

@@ -8,8 +8,8 @@
 ```
 1. Аналітик трендів  → шукає Shorts, які зараз «вистрілюють» у ваших нішах (YouTube API)
 2. Аналітик каналу   → дивиться, які ваші відео спрацювали, а які ні
-3. Стратег (Claude)  → вибирає тему і кут подачі на основі даних
-4. Сценарист (Claude)→ хук, сценарій по сценах, назва, опис, теги, текст обкладинки
+3. Стратег (ШІ)     → вибирає тему і кут подачі на основі даних
+4. Сценарист (ШІ)   → хук, сценарій по сценах, назва, опис, теги, текст обкладинки
 5. Продюсер          → ШІ-озвучка, кадри з Pexels, динамічні субтитри, монтаж 1080×1920
 6. Публікатор (опц.) → завантажує на YouTube як приватне, щоб ви перевірили
 ```
@@ -37,12 +37,13 @@
 
 | Секрет | Де взяти | Ціна |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | [console.anthropic.com](https://console.anthropic.com) → API Keys | ≈ $0.20–0.50 за відео |
+| `GEMINI_API_KEY` | [aistudio.google.com](https://aistudio.google.com) → увійти через Google → **Get API key** → *Create API key* | безкоштовно |
+| `GROQ_API_KEY` *(необов'язково, запасна модель)* | [console.groq.com](https://console.groq.com) → *API Keys* → *Create API Key* | безкоштовно |
 | `YOUTUBE_API_KEY` | [console.cloud.google.com](https://console.cloud.google.com) → створити проєкт → *APIs & Services* → *Library* → увімкнути **YouTube Data API v3** → *Credentials* → *Create credentials* → **API key** | безкоштовно |
 | `PEXELS_API_KEY` | [pexels.com/api](https://www.pexels.com/api/) → зареєструватися → *Your API Key* | безкоштовно |
 | `YOUTUBE_CHANNEL_ID` | YouTube → ваш канал → *Налаштування* → *Розширені налаштування* → **ID каналу** (`UC…`) | — |
 
-Озвучка (голоси Microsoft Edge) безкоштовна, ключ не потрібен.
+**Усе безкоштовно.** Озвучка (голоси Microsoft Edge) безкоштовна, ключ не потрібен.
 
 ### 2. Додати ключі в GitHub
 
@@ -58,6 +59,7 @@
 
 - `videos_per_run`: скільки відео за раз (1–3)
 - `niches`: ніші та пошукові запити для аналізу трендів
+- `llm.providers`: порядок моделей ШІ. Щоб отримати кращі сценарії, можна додати платний Claude (секрет `ANTHROPIC_API_KEY`)
 - `voice.name`: голос (`en-US-GuyNeural`, `en-US-JennyNeural`, `en-US-AriaNeural` …)
 - `publish.enabled`: автозавантаження на YouTube
 
