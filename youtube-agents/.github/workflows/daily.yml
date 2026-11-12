@@ -1,0 +1,67 @@
+name: Make YouTube Short
+
+on:
+  schedule:
+    - cron: "17 6 * * *"   # щодня о 06:17 UTC (≈ 8–9 ранку за Києвом)
+  workflow_dispatch:         # кнопка «Run workflow» для ручного запуску
+    inputs:
+      topic:
+        description: "Своя тема (необов'язково, англійською)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: make-short
+  cancel-in-progress: false
+
+jobs:
+  make:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install ffmpeg and fonts
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
+
+      - name: Install Python packages
+        run: pip install -r requirements.txt
+
+      - name: Run agents
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          YOUTUBE_CHANNEL_ID: ${{ secrets.YOUTUBE_CHANNEL_ID }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          TOPIC: ${{ github.event.inputs.topic }}
+        run: |
+          if [ -n "$TOPIC" ]; then python main.py --topic "$TOPIC"; else python main.py; fi
+
+      - name: Save video package (download from the run page)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: short-${{ github.run_number }}
+          path: output/
+          retention-days: 14
+          if-no-files-found: ignore
+
+      - name: Save analytics history to the repo
+        if: success()
+        run: |
+          git config user.name "youtube-agents-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || git commit -m "Analytics and history update"
+          git push

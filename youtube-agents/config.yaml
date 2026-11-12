@@ -1,0 +1,50 @@
+# ===== Налаштування YouTube-агентів =====
+# Тут можна міняти ніші, кількість відео, голос тощо без зміни коду.
+
+channel:
+  language: en            # мова відео
+  region: US              # країна, для якої шукаємо тренди
+  format: shorts          # вертикальні відео до ~60 сек
+
+# Скільки відео робити за один запуск
+videos_per_run: 1
+
+# Ніші, які відстежує аналітик трендів.
+# keywords — пошукові запити англійською, за якими шукаємо популярні Shorts.
+niches:
+  facts:
+    name: "Facts / Educational"
+    keywords: ["crazy facts", "space facts", "history facts", "science facts"]
+  motivation:
+    name: "Motivation / Self-improvement"
+    keywords: ["motivation", "self improvement", "psychology facts", "discipline"]
+  money_ai:
+    name: "Money / Business / AI"
+    keywords: ["make money online", "AI tools", "business ideas", "personal finance tips"]
+
+trends:
+  days_back: 7            # шукаємо відео, опубліковані за останні N днів
+  results_per_keyword: 25
+  max_duration_sec: 180   # що вважаємо Shorts
+
+llm:
+  model: claude-opus-5-5
+  effort: high
+
+voice:
+  # Безкоштовні голоси Microsoft Edge. Інші варіанти:
+  # en-US-GuyNeural, en-US-JennyNeural, en-US-AriaNeural, en-US-ChristopherNeural
+  name: en-US-AndrewMultilingualNeural
+  rate: "+8%"             # трохи швидше — для Shorts це краще
+
+video:
+  width: 1080
+  height: 1920
+  fps: 30
+  max_clip_seconds: 3.2   # як часто змінюється кадр (динаміка)
+  music_volume: 0.12      # гучність фонової музики (якщо є файли в assets/music)
+  subtitle_words: 3       # скільки слів одночасно в субтитрах
+
+publish:
+  enabled: false          # true — агенти самі завантажать відео на YouTube
+  privacy: private        # private = видно тільки вам, ви перевіряєте й публікуєте
